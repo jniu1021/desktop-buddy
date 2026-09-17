@@ -68,6 +68,7 @@ final class EdgePetWindowController: ObservableObject {
     @Published private(set) var wantsVisible: Bool
     @Published private(set) var isFullscreenSuppressed = false
     @Published private(set) var isFocusSuppressed = false
+    @Published private(set) var isRecoveryRestoreSuppressed = false
     @Published private(set) var scale: Double
     @Published private(set) var edge: PetScreenEdge
     var onPetClick: (() -> Void)?
@@ -173,6 +174,7 @@ final class EdgePetWindowController: ObservableObject {
     }
 
     func summon() {
+        isRecoveryRestoreSuppressed = false
         wantsVisible = true
         hasManualSuppressionOverride = EdgePetVisibilityPolicy.manualOverrideForSummon(
             isFullscreenSuppressed: isFullscreenSuppressed,
@@ -182,7 +184,8 @@ final class EdgePetWindowController: ObservableObject {
         reconcileVisibility()
     }
 
-    func restoreVisibility() {
+    func restoreVisibility(allowAutomaticRestore: Bool = true) {
+        isRecoveryRestoreSuppressed = !allowAutomaticRestore
         reconcileVisibility()
     }
 
@@ -205,7 +208,8 @@ final class EdgePetWindowController: ObservableObject {
             wantsVisible: wantsVisible,
             isFullscreenSuppressed: isFullscreenSuppressed,
             isFocusSuppressed: isFocusSuppressed,
-            hasManualOverride: hasManualSuppressionOverride
+            hasManualOverride: hasManualSuppressionOverride,
+            automaticRestoreSuppressed: isRecoveryRestoreSuppressed
         ) {
             if !isVisible { show() }
         } else if isVisible {

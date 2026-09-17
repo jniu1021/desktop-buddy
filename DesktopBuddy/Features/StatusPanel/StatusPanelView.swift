@@ -506,10 +506,20 @@ struct StatusPanelView: View {
                 Toggle(
                     "Show desktop pet",
                     isOn: Binding(
-                        get: { edgePetController.wantsVisible },
+                        get: {
+                            edgePetController.wantsVisible
+                                && !edgePetController.isRecoveryRestoreSuppressed
+                        },
                         set: { edgePetController.setVisible($0) }
                     )
                 )
+
+                if edgePetController.isRecoveryRestoreSuppressed {
+                    Text("Desktop pet stayed hidden because the previous session ended unexpectedly. Turn it on when you are ready.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
 
                 if edgePetController.isFullscreenSuppressed
                     && edgePetController.wantsVisible

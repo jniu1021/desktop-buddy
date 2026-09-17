@@ -48,9 +48,11 @@ enum EdgePetVisibilityPolicy {
         wantsVisible: Bool,
         isFullscreenSuppressed: Bool,
         isFocusSuppressed: Bool,
-        hasManualOverride: Bool
+        hasManualOverride: Bool,
+        automaticRestoreSuppressed: Bool = false
     ) -> Bool {
         guard wantsVisible else { return false }
+        guard !automaticRestoreSuppressed else { return false }
         return hasManualOverride || (!isFullscreenSuppressed && !isFocusSuppressed)
     }
 

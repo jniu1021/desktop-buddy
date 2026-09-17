@@ -12,6 +12,7 @@ struct DependencyContainer {
     let preferences: any PreferencesStoring
     let alphaMetrics: any AlphaMetricsPersisting
     let diagnostics: any LocalDiagnosticRecording
+    let sessionLifecycle: any SessionLifecyclePersisting
 
     static func live() -> DependencyContainer {
         let diagnostics = OSLogDiagnosticRecorder()
@@ -28,7 +29,8 @@ struct DependencyContainer {
             lowPowerModeEnabled: { ProcessInfo.processInfo.isLowPowerModeEnabled },
             preferences: UserDefaultsPreferencesStore(),
             alphaMetrics: UserDefaultsAlphaMetricsRepository(),
-            diagnostics: diagnostics
+            diagnostics: diagnostics,
+            sessionLifecycle: UserDefaultsSessionLifecycleRepository()
         )
     }
 }

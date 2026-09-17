@@ -61,6 +61,9 @@
 		C10000000000000000000035 /* LocalDiagnosticRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000016 /* LocalDiagnosticRecording.swift */; };
 		C10000000000000000000036 /* OSLogDiagnosticRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000017 /* OSLogDiagnosticRecorder.swift */; };
 		C10000000000000000000037 /* PendingNoticeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000018 /* PendingNoticeStore.swift */; };
+		C10000000000000000000038 /* LaunchRecoveryPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000019 /* LaunchRecoveryPolicy.swift */; };
+		C10000000000000000000039 /* SessionLifecyclePersisting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001A /* SessionLifecyclePersisting.swift */; };
+		C1000000000000000000003A /* UserDefaultsSessionLifecycleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001B /* UserDefaultsSessionLifecycleRepository.swift */; };
 		D10000000000000000000001 /* BatteryStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000001 /* BatteryStateTests.swift */; };
 		D10000000000000000000002 /* UserDefaultsPreferencesStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* UserDefaultsPreferencesStoreTests.swift */; };
 		D10000000000000000000003 /* SystemBatterySensorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* SystemBatterySensorTests.swift */; };
@@ -80,6 +83,7 @@
 		D10000000000000000000011 /* PetPresentationEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000000F /* PetPresentationEngineTests.swift */; };
 		D10000000000000000000012 /* AlphaMetricsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000014 /* AlphaMetricsTests.swift */; };
 		D10000000000000000000013 /* SystemForegroundActivitySensorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000015 /* SystemForegroundActivitySensorTests.swift */; };
+		D10000000000000000000014 /* LaunchRecoveryPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001C /* LaunchRecoveryPolicyTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,6 +170,10 @@
 		D60000000000000000000016 /* LocalDiagnosticRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDiagnosticRecording.swift; sourceTree = "<group>"; };
 		D60000000000000000000017 /* OSLogDiagnosticRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLogDiagnosticRecorder.swift; sourceTree = "<group>"; };
 		D60000000000000000000018 /* PendingNoticeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingNoticeStore.swift; sourceTree = "<group>"; };
+		D60000000000000000000019 /* LaunchRecoveryPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchRecoveryPolicy.swift; sourceTree = "<group>"; };
+		D6000000000000000000001A /* SessionLifecyclePersisting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionLifecyclePersisting.swift; sourceTree = "<group>"; };
+		D6000000000000000000001B /* UserDefaultsSessionLifecycleRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsSessionLifecycleRepository.swift; sourceTree = "<group>"; };
+		D6000000000000000000001C /* LaunchRecoveryPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchRecoveryPolicyTests.swift; sourceTree = "<group>"; };
 		F10000000000000000000001 /* DesktopBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DesktopBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F10000000000000000000002 /* DesktopBuddyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DesktopBuddyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -261,6 +269,7 @@
 				D60000000000000000000005 /* FanSensing.swift */,
 				D60000000000000000000011 /* AlphaMetricsPersisting.swift */,
 				D60000000000000000000016 /* LocalDiagnosticRecording.swift */,
+				D6000000000000000000001A /* SessionLifecyclePersisting.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -277,6 +286,7 @@
 				D60000000000000000000008 /* CodexPollingBackoff.swift */,
 				D6000000000000000000000B /* DevicePollingPolicy.swift */,
 				D6000000000000000000000D /* PetPresentationEngine.swift */,
+				D60000000000000000000019 /* LaunchRecoveryPolicy.swift */,
 			);
 			path = DecisionEngine;
 			sourceTree = "<group>";
@@ -316,6 +326,7 @@
 			children = (
 				A70000000000000000000001 /* UserDefaultsPreferencesStore.swift */,
 				D60000000000000000000012 /* UserDefaultsAlphaMetricsRepository.swift */,
+				D6000000000000000000001B /* UserDefaultsSessionLifecycleRepository.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -409,6 +420,7 @@
 				D6000000000000000000000F /* PetPresentationEngineTests.swift */,
 				D60000000000000000000014 /* AlphaMetricsTests.swift */,
 				D60000000000000000000015 /* SystemForegroundActivitySensorTests.swift */,
+				D6000000000000000000001C /* LaunchRecoveryPolicyTests.swift */,
 			);
 			path = CoreTests;
 			sourceTree = "<group>";
@@ -565,6 +577,9 @@
 				C10000000000000000000035 /* LocalDiagnosticRecording.swift in Sources */,
 				C10000000000000000000036 /* OSLogDiagnosticRecorder.swift in Sources */,
 				C10000000000000000000037 /* PendingNoticeStore.swift in Sources */,
+				C10000000000000000000038 /* LaunchRecoveryPolicy.swift in Sources */,
+				C10000000000000000000039 /* SessionLifecyclePersisting.swift in Sources */,
+				C1000000000000000000003A /* UserDefaultsSessionLifecycleRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,6 +606,7 @@
 				D10000000000000000000011 /* PetPresentationEngineTests.swift in Sources */,
 				D10000000000000000000012 /* AlphaMetricsTests.swift in Sources */,
 				D10000000000000000000013 /* SystemForegroundActivitySensorTests.swift in Sources */,
+				D10000000000000000000014 /* LaunchRecoveryPolicyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

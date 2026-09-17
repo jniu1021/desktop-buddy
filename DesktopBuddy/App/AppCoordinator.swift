@@ -12,6 +12,8 @@ final class AppCoordinator: NSObject {
     private let petPresentation: PetPresentationStore
     private let alphaMetrics: AlphaMetricsTracker
     private let diagnostics: any LocalDiagnosticRecording
+    private let sessionLifecycle: any SessionLifecyclePersisting
+    private let launchRecoveryAction: LaunchRecoveryAction
     private let edgePetController: EdgePetWindowController
     private let pendingNotices = PendingNoticeStore()
     private let noticeBubble = NoticeBubbleWindowController()
@@ -45,6 +47,10 @@ final class AppCoordinator: NSObject {
         self.petPresentation = petPresentation
         self.alphaMetrics = alphaMetrics
         self.diagnostics = container.diagnostics
+        self.sessionLifecycle = container.sessionLifecycle
+        self.launchRecoveryAction = LaunchRecoveryPolicy.action(
+            previousSessionWasActive: container.sessionLifecycle.isSessionActive
+        )
         self.edgePetController = EdgePetWindowController(
             store: stateStore,
             animationPlayer: animationPlayer,
@@ -55,7 +61,11 @@ final class AppCoordinator: NSObject {
     }
 
     func start() {
+        sessionLifecycle.isSessionActive = true
         diagnostics.record(.applicationStarted)
+        if launchRecoveryAction == .startWithEdgePetHidden {
+            diagnostics.record(.recoveredFromUncleanExit)
+        }
         edgePetController.onPetClick = { [weak self] in
             self?.showPopover()
         }
@@ -72,7 +82,9 @@ final class AppCoordinator: NSObject {
         updateFullscreenSuppression()
         startFullscreenSampling()
         reconcileActivityConsent()
-        edgePetController.restoreVisibility()
+        edgePetController.restoreVisibility(
+            allowAutomaticRestore: launchRecoveryAction == .restoreNormally
+        )
         stateStore.start()
         animationPlayer.start()
     }
@@ -90,6 +102,7 @@ final class AppCoordinator: NSObject {
         animationPlayer.stop()
         edgePetController.stop()
         noticeBubble.hide()
+        sessionLifecycle.isSessionActive = false
     }
 
     private func configureStatusItem() {

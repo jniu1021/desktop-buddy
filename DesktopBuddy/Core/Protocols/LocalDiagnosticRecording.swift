@@ -18,6 +18,7 @@ enum LocalDiagnosticFailure: String, Equatable, Sendable {
 enum LocalDiagnosticEvent: Equatable, Sendable {
     case applicationStarted
     case applicationStopped
+    case recoveredFromUncleanExit
     case sensorFailure(sensor: LocalDiagnosticSensor, reason: LocalDiagnosticFailure)
 }
 
