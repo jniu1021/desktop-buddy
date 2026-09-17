@@ -37,4 +37,34 @@ final class LaunchRecoveryPolicyTests: XCTestCase {
         repository.isSessionActive = false
         XCTAssertFalse(UserDefaultsSessionLifecycleRepository(defaults: defaults).isSessionActive)
     }
+
+    func testRuntimeLifecycleSuspendsAndResumesOnlyOnStateChanges() {
+        let suspended = RuntimeLifecyclePolicy.transition(
+            from: .active,
+            event: .systemWillSleep
+        )
+        XCTAssertEqual(suspended, RuntimeLifecycleTransition(state: .suspended, action: .suspend))
+
+        XCTAssertEqual(
+            RuntimeLifecyclePolicy.transition(
+                from: suspended.state,
+                event: .systemWillSleep
+            ),
+            RuntimeLifecycleTransition(state: .suspended, action: nil)
+        )
+
+        let resumed = RuntimeLifecyclePolicy.transition(
+            from: suspended.state,
+            event: .systemDidWake
+        )
+        XCTAssertEqual(resumed, RuntimeLifecycleTransition(state: .active, action: .resume))
+
+        XCTAssertEqual(
+            RuntimeLifecyclePolicy.transition(
+                from: resumed.state,
+                event: .systemDidWake
+            ),
+            RuntimeLifecycleTransition(state: .active, action: nil)
+        )
+    }
 }

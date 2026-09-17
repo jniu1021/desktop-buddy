@@ -14,6 +14,10 @@ struct OSLogDiagnosticRecorder: LocalDiagnosticRecording {
             Self.logger.notice("application_stopped")
         case .recoveredFromUncleanExit:
             Self.logger.warning("recovered_from_unclean_exit edge_pet_auto_restore_suppressed=true")
+        case .systemWillSleep:
+            Self.logger.notice("system_will_sleep runtime_sampling_suspended=true")
+        case .systemDidWake:
+            Self.logger.notice("system_did_wake runtime_sampling_resumed=true")
         case let .sensorFailure(sensor, reason):
             Self.logger.error(
                 "sensor_failure sensor=\(sensor.rawValue, privacy: .public) reason=\(reason.rawValue, privacy: .public)"

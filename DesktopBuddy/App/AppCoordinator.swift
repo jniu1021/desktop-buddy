@@ -23,6 +23,7 @@ final class AppCoordinator: NSObject {
     private var focusTask: Task<Void, Never>?
     private var fullscreenTask: Task<Void, Never>?
     private var noticePresentationTask: Task<Void, Never>?
+    private var runtimeLifecycleState: RuntimeLifecycleState = .active
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     private let popover = NSPopover()
     private var subscriptions = Set<AnyCancellable>()
@@ -274,6 +275,18 @@ final class AppCoordinator: NSObject {
             self?.updateFullscreenSuppression()
         }
         .store(in: &subscriptions)
+
+        center.publisher(for: NSWorkspace.willSleepNotification)
+            .sink { [weak self] _ in
+                self?.handleRuntimeLifecycle(.systemWillSleep)
+            }
+            .store(in: &subscriptions)
+
+        center.publisher(for: NSWorkspace.didWakeNotification)
+            .sink { [weak self] _ in
+                self?.handleRuntimeLifecycle(.systemDidWake)
+            }
+            .store(in: &subscriptions)
     }
 
     private func observeFocusSuppression() {
@@ -302,7 +315,40 @@ final class AppCoordinator: NSObject {
             .store(in: &subscriptions)
     }
 
+    private func handleRuntimeLifecycle(_ event: RuntimeLifecycleEvent) {
+        let transition = RuntimeLifecyclePolicy.transition(
+            from: runtimeLifecycleState,
+            event: event
+        )
+        runtimeLifecycleState = transition.state
+
+        switch transition.action {
+        case .suspend:
+            diagnostics.record(.systemWillSleep)
+            focusTask?.cancel()
+            focusTask = nil
+            fullscreenTask?.cancel()
+            fullscreenTask = nil
+            noticePresentationTask?.cancel()
+            noticePresentationTask = nil
+            noticeBubble.hide()
+            stateStore.stop()
+            animationPlayer.stop()
+        case .resume:
+            diagnostics.record(.systemDidWake)
+            stateStore.start()
+            animationPlayer.start()
+            updateFullscreenSuppression()
+            startFullscreenSampling()
+            reconcileActivityConsent()
+        case nil:
+            break
+        }
+    }
+
     private func reconcileActivityConsent() {
+        guard runtimeLifecycleState == .active else { return }
+
         if stateStore.applicationActivityEnabled {
             updateFocusInference()
             startFocusSampling()
@@ -315,7 +361,9 @@ final class AppCoordinator: NSObject {
     }
 
     private func startFocusSampling() {
-        guard stateStore.applicationActivityEnabled, focusTask == nil else { return }
+        guard runtimeLifecycleState == .active,
+              stateStore.applicationActivityEnabled,
+              focusTask == nil else { return }
         focusTask = Task { [weak self] in
             while !Task.isCancelled {
                 do {
@@ -334,7 +382,7 @@ final class AppCoordinator: NSObject {
     }
 
     private func startFullscreenSampling() {
-        guard fullscreenTask == nil else { return }
+        guard runtimeLifecycleState == .active, fullscreenTask == nil else { return }
         fullscreenTask = Task { [weak self] in
             while !Task.isCancelled {
                 do {
