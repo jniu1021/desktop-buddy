@@ -1,0 +1,21 @@
+import OSLog
+
+struct OSLogDiagnosticRecorder: LocalDiagnosticRecording {
+    private static let logger = Logger(
+        subsystem: "com.desktopbuddy.app",
+        category: "local-diagnostics"
+    )
+
+    func record(_ event: LocalDiagnosticEvent) {
+        switch event {
+        case .applicationStarted:
+            Self.logger.notice("application_started")
+        case .applicationStopped:
+            Self.logger.notice("application_stopped")
+        case let .sensorFailure(sensor, reason):
+            Self.logger.error(
+                "sensor_failure sensor=\(sensor.rawValue, privacy: .public) reason=\(reason.rawValue, privacy: .public)"
+            )
+        }
+    }
+}

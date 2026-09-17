@@ -1,0 +1,754 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C10000000000000000000001 /* DesktopBuddyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001 /* DesktopBuddyApp.swift */; };
+		C10000000000000000000002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000000000000000000001 /* AppDelegate.swift */; };
+		C10000000000000000000003 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0000000000000000000001 /* AppCoordinator.swift */; };
+		C10000000000000000000004 /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80000000000000000000001 /* DependencyContainer.swift */; };
+		C10000000000000000000005 /* BatteryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* BatteryState.swift */; };
+		C10000000000000000000006 /* StatusMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* StatusMetric.swift */; };
+		C10000000000000000000007 /* BatterySensing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30000000000000000000001 /* BatterySensing.swift */; };
+		C10000000000000000000008 /* PreferencesStoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40000000000000000000001 /* PreferencesStoring.swift */; };
+		C10000000000000000000009 /* BuddyStateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50000000000000000000001 /* BuddyStateStore.swift */; };
+		C1000000000000000000000A /* SystemBatterySensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60000000000000000000001 /* SystemBatterySensor.swift */; };
+		C1000000000000000000000B /* UserDefaultsPreferencesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70000000000000000000001 /* UserDefaultsPreferencesStore.swift */; };
+		C1000000000000000000000C /* MenuBarPetRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0000000000000000000001 /* MenuBarPetRenderer.swift */; };
+		C1000000000000000000000D /* PixelPigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000001 /* PixelPigView.swift */; };
+		C1000000000000000000000E /* StatusPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE0000000000000000000001 /* StatusPanelView.swift */; };
+		C1000000000000000000000F /* DeviceSeverity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000001 /* DeviceSeverity.swift */; };
+		C10000000000000000000010 /* MemoryUsageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30000000000000000000001 /* MemoryUsageState.swift */; };
+		C10000000000000000000011 /* MemoryUsageSensing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40000000000000000000001 /* MemoryUsageSensing.swift */; };
+		C10000000000000000000012 /* SystemMemoryUsageSensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50000000000000000000001 /* SystemMemoryUsageSensor.swift */; };
+		C10000000000000000000013 /* PetAnimationPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80000000000000000000001 /* PetAnimationPlayer.swift */; };
+		C10000000000000000000014 /* PixelPigSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0000000000000000000001 /* PixelPigSprite.swift */; };
+		C10000000000000000000015 /* EdgePetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000000001 /* EdgePetView.swift */; };
+		C10000000000000000000016 /* EdgePetWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0000000000000000000001 /* EdgePetWindowController.swift */; };
+		C10000000000000000000017 /* PetScreenEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000001 /* PetScreenEdge.swift */; };
+		C10000000000000000000018 /* InteractionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0000000000000000000001 /* InteractionMode.swift */; };
+		C10000000000000000000019 /* NoticeEligibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0000000000000000000001 /* NoticeEligibility.swift */; };
+		C1000000000000000000001A /* DeviceNoticeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20000000000000000000001 /* DeviceNoticeEngine.swift */; };
+		C1000000000000000000001B /* NoticeBubbleWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C30000000000000000000001 /* NoticeBubbleWindowController.swift */; };
+		C1000000000000000000001C /* FullscreenSensing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50000000000000000000001 /* FullscreenSensing.swift */; };
+		C1000000000000000000001D /* FullscreenPresentationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60000000000000000000001 /* FullscreenPresentationPolicy.swift */; };
+		C1000000000000000000001E /* ForegroundFullscreenSensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70000000000000000000001 /* ForegroundFullscreenSensor.swift */; };
+		C1000000000000000000001F /* ForegroundActivitySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90000000000000000000001 /* ForegroundActivitySnapshot.swift */; };
+		C10000000000000000000020 /* ForegroundActivitySensing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0000000000000000000001 /* ForegroundActivitySensing.swift */; };
+		C10000000000000000000021 /* FocusActivityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0000000000000000000001 /* FocusActivityTracker.swift */; };
+		C10000000000000000000022 /* FocusActivityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0000000000000000000001 /* FocusActivityStore.swift */; };
+		C10000000000000000000023 /* SystemForegroundActivitySensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0000000000000000000001 /* SystemForegroundActivitySensor.swift */; };
+		C10000000000000000000024 /* CodexAllowanceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0000000000000000000001 /* CodexAllowanceState.swift */; };
+		C10000000000000000000025 /* CodexAllowanceSensing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000000000000000000001 /* CodexAllowanceSensing.swift */; };
+		C10000000000000000000026 /* CodexAllowanceDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30000000000000000000001 /* CodexAllowanceDecoder.swift */; };
+		C10000000000000000000027 /* CodexAppServerAllowanceSensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40000000000000000000001 /* CodexAppServerAllowanceSensor.swift */; };
+		C10000000000000000000028 /* FanControlState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000001 /* FanControlState.swift */; };
+		C10000000000000000000029 /* FanControlPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000002 /* FanControlPolicy.swift */; };
+		C1000000000000000000002B /* FanSensing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000005 /* FanSensing.swift */; };
+		C1000000000000000000002C /* SystemFanSensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000006 /* SystemFanSensor.swift */; };
+		C1000000000000000000002D /* CodexPollingBackoff.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000008 /* CodexPollingBackoff.swift */; };
+		C1000000000000000000002E /* DevicePollingPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000000B /* DevicePollingPolicy.swift */; };
+		C1000000000000000000002F /* PetPresentationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000000D /* PetPresentationEngine.swift */; };
+		C10000000000000000000030 /* PetPresentationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000000E /* PetPresentationStore.swift */; };
+		C10000000000000000000031 /* AlphaMetricsSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000010 /* AlphaMetricsSnapshot.swift */; };
+		C10000000000000000000032 /* AlphaMetricsPersisting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000011 /* AlphaMetricsPersisting.swift */; };
+		C10000000000000000000033 /* UserDefaultsAlphaMetricsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000012 /* UserDefaultsAlphaMetricsRepository.swift */; };
+		C10000000000000000000034 /* AlphaMetricsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000013 /* AlphaMetricsTracker.swift */; };
+		C10000000000000000000035 /* LocalDiagnosticRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000016 /* LocalDiagnosticRecording.swift */; };
+		C10000000000000000000036 /* OSLogDiagnosticRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000017 /* OSLogDiagnosticRecorder.swift */; };
+		C10000000000000000000037 /* PendingNoticeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000018 /* PendingNoticeStore.swift */; };
+		D10000000000000000000001 /* BatteryStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000001 /* BatteryStateTests.swift */; };
+		D10000000000000000000002 /* UserDefaultsPreferencesStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* UserDefaultsPreferencesStoreTests.swift */; };
+		D10000000000000000000003 /* SystemBatterySensorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* SystemBatterySensorTests.swift */; };
+		D10000000000000000000004 /* MemoryUsageStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60000000000000000000001 /* MemoryUsageStateTests.swift */; };
+		D10000000000000000000005 /* SystemMemoryUsageSensorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70000000000000000000001 /* SystemMemoryUsageSensorTests.swift */; };
+		D10000000000000000000006 /* PetAnimationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90000000000000000000001 /* PetAnimationPolicyTests.swift */; };
+		D10000000000000000000007 /* NoticeEligibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00000000000000000000001 /* NoticeEligibilityTests.swift */; };
+		D10000000000000000000008 /* DeviceNoticeEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40000000000000000000001 /* DeviceNoticeEngineTests.swift */; };
+		D10000000000000000000009 /* FullscreenPresentationPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80000000000000000000001 /* FullscreenPresentationPolicyTests.swift */; };
+		D1000000000000000000000A /* FocusActivityTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0000000000000000000001 /* FocusActivityTrackerTests.swift */; };
+		D1000000000000000000000B /* CodexAllowanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50000000000000000000001 /* CodexAllowanceTests.swift */; };
+		D1000000000000000000000C /* FanControlPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000004 /* FanControlPolicyTests.swift */; };
+		D1000000000000000000000D /* SystemFanSensorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000007 /* SystemFanSensorTests.swift */; };
+		D1000000000000000000000E /* CodexPollingBackoffTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000009 /* CodexPollingBackoffTests.swift */; };
+		D1000000000000000000000F /* MenuBarStatusAccessibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000000A /* MenuBarStatusAccessibilityTests.swift */; };
+		D10000000000000000000010 /* DevicePollingPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000000C /* DevicePollingPolicyTests.swift */; };
+		D10000000000000000000011 /* PetPresentationEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000000F /* PetPresentationEngineTests.swift */; };
+		D10000000000000000000012 /* AlphaMetricsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000014 /* AlphaMetricsTests.swift */; };
+		D10000000000000000000013 /* SystemForegroundActivitySensorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000015 /* SystemForegroundActivitySensorTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F30000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F40000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F50000000000000000000001;
+			remoteInfo = DesktopBuddy;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A10000000000000000000001 /* BatteryState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryState.swift; sourceTree = "<group>"; };
+		A20000000000000000000001 /* StatusMetric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMetric.swift; sourceTree = "<group>"; };
+		A30000000000000000000001 /* BatterySensing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatterySensing.swift; sourceTree = "<group>"; };
+		A40000000000000000000001 /* PreferencesStoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesStoring.swift; sourceTree = "<group>"; };
+		A50000000000000000000001 /* BuddyStateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuddyStateStore.swift; sourceTree = "<group>"; };
+		A60000000000000000000001 /* SystemBatterySensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemBatterySensor.swift; sourceTree = "<group>"; };
+		A70000000000000000000001 /* UserDefaultsPreferencesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsPreferencesStore.swift; sourceTree = "<group>"; };
+		A80000000000000000000001 /* DependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
+		A90000000000000000000001 /* DesktopBuddyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopBuddyApp.swift; sourceTree = "<group>"; };
+		AA0000000000000000000001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AB0000000000000000000001 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		AC0000000000000000000001 /* MenuBarPetRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPetRenderer.swift; sourceTree = "<group>"; };
+		AD0000000000000000000001 /* PixelPigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelPigView.swift; sourceTree = "<group>"; };
+		AE0000000000000000000001 /* StatusPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusPanelView.swift; sourceTree = "<group>"; };
+		AF0000000000000000000001 /* BatteryStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryStateTests.swift; sourceTree = "<group>"; };
+		B00000000000000000000001 /* UserDefaultsPreferencesStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsPreferencesStoreTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000001 /* SystemBatterySensorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemBatterySensorTests.swift; sourceTree = "<group>"; };
+		B20000000000000000000001 /* DeviceSeverity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSeverity.swift; sourceTree = "<group>"; };
+		B30000000000000000000001 /* MemoryUsageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryUsageState.swift; sourceTree = "<group>"; };
+		B40000000000000000000001 /* MemoryUsageSensing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryUsageSensing.swift; sourceTree = "<group>"; };
+		B50000000000000000000001 /* SystemMemoryUsageSensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMemoryUsageSensor.swift; sourceTree = "<group>"; };
+		B60000000000000000000001 /* MemoryUsageStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryUsageStateTests.swift; sourceTree = "<group>"; };
+		B70000000000000000000001 /* SystemMemoryUsageSensorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMemoryUsageSensorTests.swift; sourceTree = "<group>"; };
+		B80000000000000000000001 /* PetAnimationPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetAnimationPlayer.swift; sourceTree = "<group>"; };
+		B90000000000000000000001 /* PetAnimationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetAnimationPolicyTests.swift; sourceTree = "<group>"; };
+		BA0000000000000000000001 /* PixelPigSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelPigSprite.swift; sourceTree = "<group>"; };
+		BB0000000000000000000001 /* EdgePetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgePetView.swift; sourceTree = "<group>"; };
+		BC0000000000000000000001 /* EdgePetWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgePetWindowController.swift; sourceTree = "<group>"; };
+		BD0000000000000000000001 /* PetScreenEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetScreenEdge.swift; sourceTree = "<group>"; };
+		BE0000000000000000000001 /* InteractionMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionMode.swift; sourceTree = "<group>"; };
+		BF0000000000000000000001 /* NoticeEligibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeEligibility.swift; sourceTree = "<group>"; };
+		C00000000000000000000001 /* NoticeEligibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeEligibilityTests.swift; sourceTree = "<group>"; };
+		C20000000000000000000001 /* DeviceNoticeEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceNoticeEngine.swift; sourceTree = "<group>"; };
+		C30000000000000000000001 /* NoticeBubbleWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeBubbleWindowController.swift; sourceTree = "<group>"; };
+		C40000000000000000000001 /* DeviceNoticeEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceNoticeEngineTests.swift; sourceTree = "<group>"; };
+		C50000000000000000000001 /* FullscreenSensing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenSensing.swift; sourceTree = "<group>"; };
+		C60000000000000000000001 /* FullscreenPresentationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenPresentationPolicy.swift; sourceTree = "<group>"; };
+		C70000000000000000000001 /* ForegroundFullscreenSensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundFullscreenSensor.swift; sourceTree = "<group>"; };
+		C80000000000000000000001 /* FullscreenPresentationPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenPresentationPolicyTests.swift; sourceTree = "<group>"; };
+		C90000000000000000000001 /* ForegroundActivitySnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundActivitySnapshot.swift; sourceTree = "<group>"; };
+		CA0000000000000000000001 /* ForegroundActivitySensing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundActivitySensing.swift; sourceTree = "<group>"; };
+		CB0000000000000000000001 /* FocusActivityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusActivityTracker.swift; sourceTree = "<group>"; };
+		CC0000000000000000000001 /* FocusActivityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusActivityStore.swift; sourceTree = "<group>"; };
+		CD0000000000000000000001 /* SystemForegroundActivitySensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemForegroundActivitySensor.swift; sourceTree = "<group>"; };
+		CE0000000000000000000001 /* FocusActivityTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusActivityTrackerTests.swift; sourceTree = "<group>"; };
+		CF0000000000000000000001 /* CodexAllowanceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAllowanceState.swift; sourceTree = "<group>"; };
+		D20000000000000000000001 /* CodexAllowanceSensing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAllowanceSensing.swift; sourceTree = "<group>"; };
+		D30000000000000000000001 /* CodexAllowanceDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAllowanceDecoder.swift; sourceTree = "<group>"; };
+		D40000000000000000000001 /* CodexAppServerAllowanceSensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAppServerAllowanceSensor.swift; sourceTree = "<group>"; };
+		D50000000000000000000001 /* CodexAllowanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAllowanceTests.swift; sourceTree = "<group>"; };
+		D60000000000000000000001 /* FanControlState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanControlState.swift; sourceTree = "<group>"; };
+		D60000000000000000000002 /* FanControlPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanControlPolicy.swift; sourceTree = "<group>"; };
+		D60000000000000000000004 /* FanControlPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanControlPolicyTests.swift; sourceTree = "<group>"; };
+		D60000000000000000000005 /* FanSensing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanSensing.swift; sourceTree = "<group>"; };
+		D60000000000000000000006 /* SystemFanSensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemFanSensor.swift; sourceTree = "<group>"; };
+		D60000000000000000000007 /* SystemFanSensorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemFanSensorTests.swift; sourceTree = "<group>"; };
+		D60000000000000000000008 /* CodexPollingBackoff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexPollingBackoff.swift; sourceTree = "<group>"; };
+		D60000000000000000000009 /* CodexPollingBackoffTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexPollingBackoffTests.swift; sourceTree = "<group>"; };
+		D6000000000000000000000A /* MenuBarStatusAccessibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarStatusAccessibilityTests.swift; sourceTree = "<group>"; };
+		D6000000000000000000000B /* DevicePollingPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicePollingPolicy.swift; sourceTree = "<group>"; };
+		D6000000000000000000000C /* DevicePollingPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicePollingPolicyTests.swift; sourceTree = "<group>"; };
+		D6000000000000000000000D /* PetPresentationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetPresentationEngine.swift; sourceTree = "<group>"; };
+		D6000000000000000000000E /* PetPresentationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetPresentationStore.swift; sourceTree = "<group>"; };
+		D6000000000000000000000F /* PetPresentationEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetPresentationEngineTests.swift; sourceTree = "<group>"; };
+		D60000000000000000000010 /* AlphaMetricsSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphaMetricsSnapshot.swift; sourceTree = "<group>"; };
+		D60000000000000000000011 /* AlphaMetricsPersisting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphaMetricsPersisting.swift; sourceTree = "<group>"; };
+		D60000000000000000000012 /* UserDefaultsAlphaMetricsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsAlphaMetricsRepository.swift; sourceTree = "<group>"; };
+		D60000000000000000000013 /* AlphaMetricsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphaMetricsTracker.swift; sourceTree = "<group>"; };
+		D60000000000000000000014 /* AlphaMetricsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphaMetricsTests.swift; sourceTree = "<group>"; };
+		D60000000000000000000015 /* SystemForegroundActivitySensorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemForegroundActivitySensorTests.swift; sourceTree = "<group>"; };
+		D60000000000000000000016 /* LocalDiagnosticRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDiagnosticRecording.swift; sourceTree = "<group>"; };
+		D60000000000000000000017 /* OSLogDiagnosticRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLogDiagnosticRecorder.swift; sourceTree = "<group>"; };
+		D60000000000000000000018 /* PendingNoticeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingNoticeStore.swift; sourceTree = "<group>"; };
+		F10000000000000000000001 /* DesktopBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DesktopBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F10000000000000000000002 /* DesktopBuddyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DesktopBuddyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F60000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F60000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E10000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				E30000000000000000000001 /* App */,
+				E40000000000000000000001 /* Core */,
+				E80000000000000000000001 /* Platform */,
+				EC0000000000000000000001 /* Features */,
+				EF0000000000000000000001 /* Tests */,
+				E20000000000000000000001 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E20000000000000000000001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000001 /* DesktopBuddy.app */,
+				F10000000000000000000002 /* DesktopBuddyTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E30000000000000000000001 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A90000000000000000000001 /* DesktopBuddyApp.swift */,
+				AA0000000000000000000001 /* AppDelegate.swift */,
+				AB0000000000000000000001 /* AppCoordinator.swift */,
+				A80000000000000000000001 /* DependencyContainer.swift */,
+				A50000000000000000000001 /* BuddyStateStore.swift */,
+				CC0000000000000000000001 /* FocusActivityStore.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		E40000000000000000000001 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				E50000000000000000000001 /* Models */,
+				E60000000000000000000001 /* Protocols */,
+				E71000000000000000000001 /* DecisionEngine */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		E50000000000000000000001 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000001 /* BatteryState.swift */,
+				A20000000000000000000001 /* StatusMetric.swift */,
+				B20000000000000000000001 /* DeviceSeverity.swift */,
+				B30000000000000000000001 /* MemoryUsageState.swift */,
+				BD0000000000000000000001 /* PetScreenEdge.swift */,
+				BE0000000000000000000001 /* InteractionMode.swift */,
+				C90000000000000000000001 /* ForegroundActivitySnapshot.swift */,
+				CF0000000000000000000001 /* CodexAllowanceState.swift */,
+				D60000000000000000000001 /* FanControlState.swift */,
+				D60000000000000000000010 /* AlphaMetricsSnapshot.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E60000000000000000000001 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A30000000000000000000001 /* BatterySensing.swift */,
+				A40000000000000000000001 /* PreferencesStoring.swift */,
+				B40000000000000000000001 /* MemoryUsageSensing.swift */,
+				C50000000000000000000001 /* FullscreenSensing.swift */,
+				CA0000000000000000000001 /* ForegroundActivitySensing.swift */,
+				D20000000000000000000001 /* CodexAllowanceSensing.swift */,
+				D60000000000000000000005 /* FanSensing.swift */,
+				D60000000000000000000011 /* AlphaMetricsPersisting.swift */,
+				D60000000000000000000016 /* LocalDiagnosticRecording.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		E71000000000000000000001 /* DecisionEngine */ = {
+			isa = PBXGroup;
+			children = (
+				BF0000000000000000000001 /* NoticeEligibility.swift */,
+				C20000000000000000000001 /* DeviceNoticeEngine.swift */,
+				C60000000000000000000001 /* FullscreenPresentationPolicy.swift */,
+				CB0000000000000000000001 /* FocusActivityTracker.swift */,
+				D30000000000000000000001 /* CodexAllowanceDecoder.swift */,
+				D60000000000000000000002 /* FanControlPolicy.swift */,
+				D60000000000000000000008 /* CodexPollingBackoff.swift */,
+				D6000000000000000000000B /* DevicePollingPolicy.swift */,
+				D6000000000000000000000D /* PetPresentationEngine.swift */,
+			);
+			path = DecisionEngine;
+			sourceTree = "<group>";
+		};
+		E80000000000000000000001 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				E90000000000000000000001 /* macOS */,
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		E90000000000000000000001 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				EA0000000000000000000001 /* Sensors */,
+				EB0000000000000000000001 /* Persistence */,
+				EB1000000000000000000001 /* Activity */,
+				EB2000000000000000000001 /* CodexIntegration */,
+				D60000000000000000000017 /* OSLogDiagnosticRecorder.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		EA0000000000000000000001 /* Sensors */ = {
+			isa = PBXGroup;
+			children = (
+				A60000000000000000000001 /* SystemBatterySensor.swift */,
+				B50000000000000000000001 /* SystemMemoryUsageSensor.swift */,
+				D60000000000000000000006 /* SystemFanSensor.swift */,
+			);
+			path = Sensors;
+			sourceTree = "<group>";
+		};
+		EB0000000000000000000001 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				A70000000000000000000001 /* UserDefaultsPreferencesStore.swift */,
+				D60000000000000000000012 /* UserDefaultsAlphaMetricsRepository.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		EB1000000000000000000001 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				C70000000000000000000001 /* ForegroundFullscreenSensor.swift */,
+				CD0000000000000000000001 /* SystemForegroundActivitySensor.swift */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		EB2000000000000000000001 /* CodexIntegration */ = {
+			isa = PBXGroup;
+			children = (
+				D40000000000000000000001 /* CodexAppServerAllowanceSensor.swift */,
+			);
+			path = CodexIntegration;
+			sourceTree = "<group>";
+		};
+		EC0000000000000000000001 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				ED0000000000000000000001 /* MenuBarPet */,
+				EE0000000000000000000001 /* StatusPanel */,
+				ED1000000000000000000001 /* EdgePet */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		ED1000000000000000000001 /* EdgePet */ = {
+			isa = PBXGroup;
+			children = (
+				BB0000000000000000000001 /* EdgePetView.swift */,
+				BC0000000000000000000001 /* EdgePetWindowController.swift */,
+				C30000000000000000000001 /* NoticeBubbleWindowController.swift */,
+			);
+			path = EdgePet;
+			sourceTree = "<group>";
+		};
+		ED0000000000000000000001 /* MenuBarPet */ = {
+			isa = PBXGroup;
+			children = (
+				AC0000000000000000000001 /* MenuBarPetRenderer.swift */,
+				B80000000000000000000001 /* PetAnimationPlayer.swift */,
+				D6000000000000000000000E /* PetPresentationStore.swift */,
+				BA0000000000000000000001 /* PixelPigSprite.swift */,
+			);
+			path = MenuBarPet;
+			sourceTree = "<group>";
+		};
+		EE0000000000000000000001 /* StatusPanel */ = {
+			isa = PBXGroup;
+			children = (
+				AD0000000000000000000001 /* PixelPigView.swift */,
+				AE0000000000000000000001 /* StatusPanelView.swift */,
+				D60000000000000000000013 /* AlphaMetricsTracker.swift */,
+				D60000000000000000000018 /* PendingNoticeStore.swift */,
+			);
+			path = StatusPanel;
+			sourceTree = "<group>";
+		};
+		EF0000000000000000000001 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000001 /* CoreTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		F00000000000000000000001 /* CoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				AF0000000000000000000001 /* BatteryStateTests.swift */,
+				B00000000000000000000001 /* UserDefaultsPreferencesStoreTests.swift */,
+				B10000000000000000000001 /* SystemBatterySensorTests.swift */,
+				B60000000000000000000001 /* MemoryUsageStateTests.swift */,
+				B70000000000000000000001 /* SystemMemoryUsageSensorTests.swift */,
+				B90000000000000000000001 /* PetAnimationPolicyTests.swift */,
+				C00000000000000000000001 /* NoticeEligibilityTests.swift */,
+				C40000000000000000000001 /* DeviceNoticeEngineTests.swift */,
+				C80000000000000000000001 /* FullscreenPresentationPolicyTests.swift */,
+				CE0000000000000000000001 /* FocusActivityTrackerTests.swift */,
+				D50000000000000000000001 /* CodexAllowanceTests.swift */,
+				D60000000000000000000004 /* FanControlPolicyTests.swift */,
+				D60000000000000000000007 /* SystemFanSensorTests.swift */,
+				D60000000000000000000009 /* CodexPollingBackoffTests.swift */,
+				D6000000000000000000000A /* MenuBarStatusAccessibilityTests.swift */,
+				D6000000000000000000000C /* DevicePollingPolicyTests.swift */,
+				D6000000000000000000000F /* PetPresentationEngineTests.swift */,
+				D60000000000000000000014 /* AlphaMetricsTests.swift */,
+				D60000000000000000000015 /* SystemForegroundActivitySensorTests.swift */,
+			);
+			path = CoreTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F50000000000000000000001 /* DesktopBuddy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FB0000000000000000000001 /* Build configuration list for PBXNativeTarget "DesktopBuddy" */;
+			buildPhases = (
+				F70000000000000000000001 /* Sources */,
+				F60000000000000000000001 /* Frameworks */,
+				F80000000000000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DesktopBuddy;
+			productName = DesktopBuddy;
+			productReference = F10000000000000000000001 /* DesktopBuddy.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F50000000000000000000002 /* DesktopBuddyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FC0000000000000000000001 /* Build configuration list for PBXNativeTarget "DesktopBuddyTests" */;
+			buildPhases = (
+				F70000000000000000000002 /* Sources */,
+				F60000000000000000000002 /* Frameworks */,
+				F80000000000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F20000000000000000000001 /* PBXTargetDependency */,
+			);
+			name = DesktopBuddyTests;
+			productName = DesktopBuddyTests;
+			productReference = F10000000000000000000002 /* DesktopBuddyTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F40000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					F50000000000000000000001 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					F50000000000000000000002 = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = F50000000000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = FA0000000000000000000001 /* Build configuration list for PBXProject "DesktopBuddy" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E10000000000000000000001;
+			productRefGroup = E20000000000000000000001 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F50000000000000000000001 /* DesktopBuddy */,
+				F50000000000000000000002 /* DesktopBuddyTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F80000000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80000000000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F70000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C10000000000000000000001 /* DesktopBuddyApp.swift in Sources */,
+				C10000000000000000000002 /* AppDelegate.swift in Sources */,
+				C10000000000000000000003 /* AppCoordinator.swift in Sources */,
+				C10000000000000000000004 /* DependencyContainer.swift in Sources */,
+				C10000000000000000000005 /* BatteryState.swift in Sources */,
+				C10000000000000000000006 /* StatusMetric.swift in Sources */,
+				C10000000000000000000007 /* BatterySensing.swift in Sources */,
+				C10000000000000000000008 /* PreferencesStoring.swift in Sources */,
+				C10000000000000000000009 /* BuddyStateStore.swift in Sources */,
+				C1000000000000000000000A /* SystemBatterySensor.swift in Sources */,
+				C1000000000000000000000B /* UserDefaultsPreferencesStore.swift in Sources */,
+				C1000000000000000000000C /* MenuBarPetRenderer.swift in Sources */,
+				C1000000000000000000000D /* PixelPigView.swift in Sources */,
+				C1000000000000000000000E /* StatusPanelView.swift in Sources */,
+				C1000000000000000000000F /* DeviceSeverity.swift in Sources */,
+				C10000000000000000000010 /* MemoryUsageState.swift in Sources */,
+				C10000000000000000000011 /* MemoryUsageSensing.swift in Sources */,
+				C10000000000000000000012 /* SystemMemoryUsageSensor.swift in Sources */,
+				C10000000000000000000013 /* PetAnimationPlayer.swift in Sources */,
+				C10000000000000000000014 /* PixelPigSprite.swift in Sources */,
+				C10000000000000000000015 /* EdgePetView.swift in Sources */,
+				C10000000000000000000016 /* EdgePetWindowController.swift in Sources */,
+				C10000000000000000000017 /* PetScreenEdge.swift in Sources */,
+				C10000000000000000000018 /* InteractionMode.swift in Sources */,
+				C10000000000000000000019 /* NoticeEligibility.swift in Sources */,
+				C1000000000000000000001A /* DeviceNoticeEngine.swift in Sources */,
+				C1000000000000000000001B /* NoticeBubbleWindowController.swift in Sources */,
+				C1000000000000000000001C /* FullscreenSensing.swift in Sources */,
+				C1000000000000000000001D /* FullscreenPresentationPolicy.swift in Sources */,
+				C1000000000000000000001E /* ForegroundFullscreenSensor.swift in Sources */,
+				C1000000000000000000001F /* ForegroundActivitySnapshot.swift in Sources */,
+				C10000000000000000000020 /* ForegroundActivitySensing.swift in Sources */,
+				C10000000000000000000021 /* FocusActivityTracker.swift in Sources */,
+				C10000000000000000000022 /* FocusActivityStore.swift in Sources */,
+				C10000000000000000000023 /* SystemForegroundActivitySensor.swift in Sources */,
+				C10000000000000000000024 /* CodexAllowanceState.swift in Sources */,
+				C10000000000000000000025 /* CodexAllowanceSensing.swift in Sources */,
+				C10000000000000000000026 /* CodexAllowanceDecoder.swift in Sources */,
+				C10000000000000000000027 /* CodexAppServerAllowanceSensor.swift in Sources */,
+				C10000000000000000000028 /* FanControlState.swift in Sources */,
+				C10000000000000000000029 /* FanControlPolicy.swift in Sources */,
+				C1000000000000000000002B /* FanSensing.swift in Sources */,
+				C1000000000000000000002C /* SystemFanSensor.swift in Sources */,
+				C1000000000000000000002D /* CodexPollingBackoff.swift in Sources */,
+				C1000000000000000000002E /* DevicePollingPolicy.swift in Sources */,
+				C1000000000000000000002F /* PetPresentationEngine.swift in Sources */,
+				C10000000000000000000030 /* PetPresentationStore.swift in Sources */,
+				C10000000000000000000031 /* AlphaMetricsSnapshot.swift in Sources */,
+				C10000000000000000000032 /* AlphaMetricsPersisting.swift in Sources */,
+				C10000000000000000000033 /* UserDefaultsAlphaMetricsRepository.swift in Sources */,
+				C10000000000000000000034 /* AlphaMetricsTracker.swift in Sources */,
+				C10000000000000000000035 /* LocalDiagnosticRecording.swift in Sources */,
+				C10000000000000000000036 /* OSLogDiagnosticRecorder.swift in Sources */,
+				C10000000000000000000037 /* PendingNoticeStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F70000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D10000000000000000000001 /* BatteryStateTests.swift in Sources */,
+				D10000000000000000000002 /* UserDefaultsPreferencesStoreTests.swift in Sources */,
+				D10000000000000000000003 /* SystemBatterySensorTests.swift in Sources */,
+				D10000000000000000000004 /* MemoryUsageStateTests.swift in Sources */,
+				D10000000000000000000005 /* SystemMemoryUsageSensorTests.swift in Sources */,
+				D10000000000000000000006 /* PetAnimationPolicyTests.swift in Sources */,
+				D10000000000000000000007 /* NoticeEligibilityTests.swift in Sources */,
+				D10000000000000000000008 /* DeviceNoticeEngineTests.swift in Sources */,
+				D10000000000000000000009 /* FullscreenPresentationPolicyTests.swift in Sources */,
+				D1000000000000000000000A /* FocusActivityTrackerTests.swift in Sources */,
+				D1000000000000000000000B /* CodexAllowanceTests.swift in Sources */,
+				D1000000000000000000000C /* FanControlPolicyTests.swift in Sources */,
+				D1000000000000000000000D /* SystemFanSensorTests.swift in Sources */,
+				D1000000000000000000000E /* CodexPollingBackoffTests.swift in Sources */,
+				D1000000000000000000000F /* MenuBarStatusAccessibilityTests.swift in Sources */,
+				D10000000000000000000010 /* DevicePollingPolicyTests.swift in Sources */,
+				D10000000000000000000011 /* PetPresentationEngineTests.swift in Sources */,
+				D10000000000000000000012 /* AlphaMetricsTests.swift in Sources */,
+				D10000000000000000000013 /* SystemForegroundActivitySensorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F20000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F50000000000000000000001 /* DesktopBuddy */;
+			targetProxy = F30000000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		F90000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F90000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		F90000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Desktop Buddy";
+				INFOPLIST_KEY_LSUIElement = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.desktopbuddy.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		F90000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Desktop Buddy";
+				INFOPLIST_KEY_LSUIElement = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.desktopbuddy.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		F90000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.desktopbuddy.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DesktopBuddy.app/Contents/MacOS/DesktopBuddy";
+			};
+			name = Debug;
+		};
+		F90000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.desktopbuddy.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DesktopBuddy.app/Contents/MacOS/DesktopBuddy";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FA0000000000000000000001 /* Build configuration list for PBXProject "DesktopBuddy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F90000000000000000000001 /* Debug */,
+				F90000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FB0000000000000000000001 /* Build configuration list for PBXNativeTarget "DesktopBuddy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F90000000000000000000003 /* Debug */,
+				F90000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FC0000000000000000000001 /* Build configuration list for PBXNativeTarget "DesktopBuddyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F90000000000000000000005 /* Debug */,
+				F90000000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F40000000000000000000001 /* Project object */;
+}
