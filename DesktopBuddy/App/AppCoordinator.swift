@@ -68,7 +68,7 @@ final class AppCoordinator: NSObject {
             diagnostics.record(.recoveredFromUncleanExit)
         }
         edgePetController.onPetClick = { [weak self] in
-            self?.showPopover()
+            self?.togglePopover()
         }
         edgePetController.onDisplayChanged = { [weak self] in
             self?.updateFullscreenSuppression()

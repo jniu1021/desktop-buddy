@@ -20,6 +20,17 @@ DesktopBuddy `0.1` was archived in Release configuration, copied to
 - Relaunch from the installed location starts normally and does not enter unclean-exit
   recovery.
 
+## Sleep and wake validation
+
+On 2026-09-18, the installed Release build was put through a real overnight sleep and wake
+cycle. Local unified logs recorded runtime sampling suspension at 23:06:43 and resumption at
+10:01:09. After wake, the edge pet remained visible, could still move between screen edges,
+and could open the status panel.
+
+The validation also exposed an interaction inconsistency: clicking the edge pet always
+requested an open operation, while the menu-bar pet toggled the panel. Both entry points now
+use the same toggle behavior, so a second click on either pet closes the open panel.
+
 ## Distribution boundary
 
 The current archive is signed ad hoc (`Sign to Run Locally`). It has no TeamIdentifier and
