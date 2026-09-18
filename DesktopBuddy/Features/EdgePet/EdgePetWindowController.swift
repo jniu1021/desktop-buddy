@@ -4,6 +4,20 @@ import SwiftUI
 
 enum EdgePetPlacementPolicy {
     static let margin: CGFloat = 12
+    static let defaultScale = 1.0
+    static let minimumScale = 0.75
+    static let maximumScale = 1.5
+    static let defaultPosition = 0.08
+
+    static func normalizedScale(_ scale: Double) -> Double {
+        guard scale.isFinite else { return defaultScale }
+        return min(max(scale, minimumScale), maximumScale)
+    }
+
+    static func normalizedPosition(_ position: Double) -> Double {
+        guard position.isFinite else { return defaultPosition }
+        return min(max(position, 0), 1)
+    }
 
     static func nearestEdge(to point: CGPoint, in frame: CGRect) -> PetScreenEdge {
         let distances: [(PetScreenEdge, CGFloat)] = [
@@ -106,10 +120,15 @@ final class EdgePetWindowController: ObservableObject {
         petPresentation: PetPresentationStore,
         preferences: any PreferencesStoring
     ) {
-        let initialScale = min(max(preferences.edgePetScale, 0.75), 1.5)
-        let initialPosition = min(max(preferences.edgePetEdgePosition, 0), 1)
+        let initialScale = EdgePetPlacementPolicy.normalizedScale(preferences.edgePetScale)
+        let initialPosition = EdgePetPlacementPolicy.normalizedPosition(
+            preferences.edgePetEdgePosition
+        )
         let initialEdge = preferences.edgePetEdge
         let presentation = EdgePetPresentationState(scale: initialScale, edge: initialEdge)
+
+        preferences.edgePetScale = initialScale
+        preferences.edgePetEdgePosition = initialPosition
 
         self.animationPlayer = animationPlayer
         self.petPresentation = petPresentation
@@ -231,7 +250,7 @@ final class EdgePetWindowController: ObservableObject {
     }
 
     func setScale(_ newScale: Double) {
-        let clampedScale = min(max(newScale, 0.75), 1.5)
+        let clampedScale = EdgePetPlacementPolicy.normalizedScale(newScale)
         scale = clampedScale
         presentation.scale = clampedScale
         preferences.edgePetScale = clampedScale

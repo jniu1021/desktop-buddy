@@ -146,6 +146,19 @@ final class PetAnimationPolicyTests: XCTestCase {
         )
     }
 
+    func testEdgePetStoredGeometryRejectsInvalidAndOutOfRangeValues() {
+        XCTAssertEqual(EdgePetPlacementPolicy.normalizedScale(.nan), 1)
+        XCTAssertEqual(EdgePetPlacementPolicy.normalizedScale(.infinity), 1)
+        XCTAssertEqual(EdgePetPlacementPolicy.normalizedScale(0.2), 0.75)
+        XCTAssertEqual(EdgePetPlacementPolicy.normalizedScale(2), 1.5)
+        XCTAssertEqual(EdgePetPlacementPolicy.normalizedScale(1.25), 1.25)
+
+        XCTAssertEqual(EdgePetPlacementPolicy.normalizedPosition(.nan), 0.08)
+        XCTAssertEqual(EdgePetPlacementPolicy.normalizedPosition(-1), 0)
+        XCTAssertEqual(EdgePetPlacementPolicy.normalizedPosition(2), 1)
+        XCTAssertEqual(EdgePetPlacementPolicy.normalizedPosition(0.6), 0.6)
+    }
+
     func testEdgePetTransitionsMoveTowardTheirScreenEdge() {
         XCTAssertEqual(EdgePetTransitionPolicy.hiddenOffset(for: .top), CGSize(width: 0, height: -34))
         XCTAssertEqual(EdgePetTransitionPolicy.hiddenOffset(for: .right), CGSize(width: 34, height: 0))
