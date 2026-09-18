@@ -26,6 +26,28 @@ Mode. Memory sampling runs every 10, 20, or 30 seconds respectively.
 No runtime change is justified by this short baseline. Longer sessions and the minimum
 supported 8 GB Apple Silicon hardware still need validation before private-alpha release.
 
+## Installed Release follow-up
+
+On 2026-09-18, an installed arm64 Release build was profiled after the status panel had
+been closed. The first 60-second run exposed approximately 2.5% CPU and 27 idle wake-ups
+per second. A sample showed that the closed `NSPopover` still retained its full SwiftUI
+content: live relative-date text and every published pet frame continued updating a hidden
+panel.
+
+The panel now uses static time labels and creates its SwiftUI content only while open,
+releasing it on close. A post-fix 29.2-second steady-state run measured:
+
+| Metric | Post-fix Release observation |
+| --- | --- |
+| CPU time delta | approximately 0.21 seconds, or 0.72% of one core |
+| Idle wake-up delta | 180, or approximately 6.2 per second |
+| Real memory | approximately 78.84–78.86 MiB |
+| Disk writes | 0 bytes during the interval |
+
+This returns the installed Release build below every same-machine regression gate without
+slowing or removing the approved ear animation. The Instruments traces remain temporary
+local engineering artifacts and are not included in the repository.
+
 ## Same-machine regression gates
 
 For an equivalent idle Debug build on this machine, investigate before release if any of the

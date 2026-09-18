@@ -3,6 +3,34 @@ import Combine
 @testable import DesktopBuddy
 
 final class DeviceNoticeEngineTests: XCTestCase {
+    func testStatusPanelTimeLabelsDoNotRequireALiveTimeline() {
+        let now = Date(timeIntervalSince1970: 10_000)
+
+        XCTAssertEqual(
+            StatusPanelTimeLabel.noticeExpiry(
+                expiresAt: now.addingTimeInterval(29 * 60 + 1),
+                now: now
+            ),
+            "Expires in 30 min"
+        )
+        XCTAssertEqual(
+            StatusPanelTimeLabel.noticeExpiry(expiresAt: now, now: now),
+            "Expires in 1 min"
+        )
+        XCTAssertEqual(
+            StatusPanelTimeLabel.lastUpdated(at: now.addingTimeInterval(-59), now: now),
+            "Updated just now"
+        )
+        XCTAssertEqual(
+            StatusPanelTimeLabel.lastUpdated(at: now.addingTimeInterval(-125), now: now),
+            "Updated 2 min ago"
+        )
+        XCTAssertEqual(
+            StatusPanelTimeLabel.lastUpdated(at: now.addingTimeInterval(-7_200), now: now),
+            "Updated 2 hr ago"
+        )
+    }
+
     private let now = Date(timeIntervalSince1970: 1_000_000)
 
     func testBatteryNoticeOnlyOnUnpluggedEntryAndCriticalEscalation() {

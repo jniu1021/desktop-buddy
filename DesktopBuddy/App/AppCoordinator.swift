@@ -3,7 +3,7 @@ import Combine
 import SwiftUI
 
 @MainActor
-final class AppCoordinator: NSObject {
+final class AppCoordinator: NSObject, NSPopoverDelegate {
     private let stateStore: BuddyStateStore
     private let fullscreenSensor: any FullscreenSensing
     private let foregroundActivitySensor: any ForegroundActivitySensing
@@ -119,6 +119,11 @@ final class AppCoordinator: NSObject {
     private func configurePopover() {
         popover.behavior = .transient
         popover.contentSize = NSSize(width: 320, height: 360)
+        popover.delegate = self
+    }
+
+    private func installPopoverContentIfNeeded() {
+        guard popover.contentViewController == nil else { return }
         popover.contentViewController = NSHostingController(
             rootView: StatusPanelView(
                 store: stateStore,
@@ -471,7 +476,12 @@ final class AppCoordinator: NSObject {
         pendingNotices.expire()
         alphaMetrics.recordMetricGlance(stateStore.selectedMetric)
         alphaMetrics.recordActionForPendingNotices(ids: pendingNotices.notices.map(\.id))
+        installPopoverContentIfNeeded()
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
         NSApp.activate(ignoringOtherApps: true)
+    }
+
+    func popoverDidClose(_ notification: Notification) {
+        popover.contentViewController = nil
     }
 }

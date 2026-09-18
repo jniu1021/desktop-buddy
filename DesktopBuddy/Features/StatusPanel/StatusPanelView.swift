@@ -1,6 +1,29 @@
 import Foundation
 import SwiftUI
 
+enum StatusPanelTimeLabel {
+    static func noticeExpiry(expiresAt: Date, now: Date = Date()) -> String {
+        let remainingSeconds = max(0, expiresAt.timeIntervalSince(now))
+        let remainingMinutes = max(1, Int(ceil(remainingSeconds / 60)))
+        return "Expires in \(remainingMinutes) min"
+    }
+
+    static func lastUpdated(at date: Date, now: Date = Date()) -> String {
+        let elapsedSeconds = max(0, now.timeIntervalSince(date))
+        if elapsedSeconds < 60 {
+            return "Updated just now"
+        }
+
+        let elapsedMinutes = Int(elapsedSeconds / 60)
+        if elapsedMinutes < 60 {
+            return "Updated \(elapsedMinutes) min ago"
+        }
+
+        let elapsedHours = Int(elapsedSeconds / 3_600)
+        return "Updated \(elapsedHours) hr ago"
+    }
+}
+
 struct StatusPanelView: View {
     @ObservedObject var store: BuddyStateStore
     @ObservedObject var animationPlayer: PetAnimationPlayer
@@ -81,8 +104,7 @@ struct StatusPanelView: View {
                             .fixedSize(horizontal: false, vertical: true)
                         HStack(spacing: 3) {
                             Image(systemName: "clock")
-                            Text("Expires")
-                            Text(notice.expiresAt, style: .relative)
+                            Text(StatusPanelTimeLabel.noticeExpiry(expiresAt: notice.expiresAt))
                         }
                         .font(.caption2)
                         .foregroundStyle(.secondary)
@@ -642,7 +664,7 @@ struct StatusPanelView: View {
             if let lastUpdatedAt = showsFanStatus ? store.fanReadoutState.observedAt
                 : (store.selectedMetric == .codexAllowance
                     ? store.codexAllowanceState.updatedAt : store.lastUpdatedAt) {
-                Text(lastUpdatedAt, style: .relative)
+                Text(StatusPanelTimeLabel.lastUpdated(at: lastUpdatedAt))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
