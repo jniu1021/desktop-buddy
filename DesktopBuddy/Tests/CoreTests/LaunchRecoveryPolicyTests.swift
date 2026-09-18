@@ -4,6 +4,16 @@ import XCTest
 
 @MainActor
 final class LaunchRecoveryPolicyTests: XCTestCase {
+    func testApplicationCoordinatorDoesNotStartInsideXCTestHost() {
+        XCTAssertTrue(ApplicationLaunchPolicy.shouldStartCoordinator(environment: [:]))
+        XCTAssertFalse(ApplicationLaunchPolicy.shouldStartCoordinator(environment: [
+            "XCTestConfigurationFilePath": "/tmp/DesktopBuddy.xctestconfiguration"
+        ]))
+        XCTAssertFalse(ApplicationLaunchPolicy.shouldStartCoordinator(environment: [
+            "XCTestBundlePath": "/tmp/DesktopBuddyTests.xctest"
+        ]))
+    }
+
     func testFirstLaunchAndCleanRestartRestoreNormally() {
         XCTAssertEqual(
             LaunchRecoveryPolicy.action(previousSessionWasActive: false),

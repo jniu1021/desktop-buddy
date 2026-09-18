@@ -9,6 +9,18 @@ enum LaunchRecoveryPolicy {
     }
 }
 
+enum ApplicationLaunchPolicy {
+    private static let testEnvironmentKeys = [
+        "XCTestConfigurationFilePath",
+        "XCTestBundlePath",
+        "XCTestSessionIdentifier"
+    ]
+
+    static func shouldStartCoordinator(environment: [String: String]) -> Bool {
+        !testEnvironmentKeys.contains { environment[$0] != nil }
+    }
+}
+
 enum RuntimeLifecycleState: Equatable {
     case active
     case suspended
