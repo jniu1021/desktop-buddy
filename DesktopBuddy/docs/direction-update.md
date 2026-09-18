@@ -12,6 +12,11 @@ only*. If this file and the design doc conflict on scope, the design doc wins.
   scope), §13 (exclusions), §17 (milestones). Do not re-derive product scope.
 - `DesktopBuddy/docs/fan-control-feasibility.md` — a **negative result**. Fan write
   access is deliberately parked. Do not "finish" it.
+- `DesktopBuddy/docs/companion-layer-notes.md` — **recorded direction only, do not
+  implement.** It describes the eventual companion/diary layer and the constraints that
+  layer must satisfy. It is explicitly out of MVP scope (§13). Read it only to avoid
+  contradicting its constraints; do not add mood, diary, prompt, or AI features to the
+  current scope because of it.
 
 ## 1. Guiding principle
 
