@@ -12,7 +12,10 @@ DesktopBuddy `0.1` was archived in Release configuration, copied to
 - The app targets macOS 13 or later and runs as a menu-bar agent (`LSUIElement`).
 - The application category is `public.app-category.utilities`.
 - Hardened Runtime is enabled.
-- Release entitlements are empty; the installed build adds no TCC permission request.
+- The target declares no `.entitlements` file. Earlier ad-hoc local Release signing injected
+  `com.apple.security.get-task-allow = true` as a base entitlement despite that absence.
+  Release now disables base-entitlement injection; every candidate artifact must be checked
+  and remain free of `get-task-allow` before distribution. This adds no TCC permission request.
 - The bundle passes strict local code-signature structure verification.
 - The installed process starts successfully and uses the expected bundle identifier,
   `com.desktopbuddy.app`.
@@ -36,6 +39,10 @@ use the same toggle behavior, so a second click on either pet closes the open pa
 The current archive is signed ad hoc (`Sign to Run Locally`). It has no TeamIdentifier and
 Gatekeeper correctly rejects it as a distributable application. It must not be sent to alpha
 testers as if it were an authenticated build.
+
+Release builds with `get-task-allow` removed cannot be attached to a debugger. Profiling that
+requires debugger attachment must use a Debug build or an explicit local-only diagnostic
+configuration; the entitlement must not be silently restored on a Release candidate.
 
 External private-alpha distribution remains parked until an Apple Developer Program team and
 a valid Developer ID Application identity are available. At that point the remaining checks
