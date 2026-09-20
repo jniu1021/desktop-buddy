@@ -47,3 +47,12 @@ configuration; the entitlement must not be silently restored on a Release candid
 External private-alpha distribution remains parked until an Apple Developer Program team and
 a valid Developer ID Application identity are available. At that point the remaining checks
 are Developer ID signing, notarization, stapling, and installation on a separate clean Mac.
+
+## Entitlement-free Release installation
+
+On 2026-09-20, the local Alpha installation was replaced with the archived Release candidate
+built with `CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO`. Strict signature verification passed,
+the installed app relaunched with bundle identifier `com.desktopbuddy.app`, and
+`codesign -d --entitlements -` printed only the executable path—no entitlement dictionary and
+no `com.apple.security.get-task-allow` entry. This verifies the installed local candidate as
+well as the archive; it does not change the external-distribution boundary above.
