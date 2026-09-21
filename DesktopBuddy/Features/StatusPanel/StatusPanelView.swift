@@ -166,15 +166,17 @@ struct StatusPanelView: View {
 
     private var navigationButtons: some View {
         HStack(spacing: 4) {
-            navigationButton(
-                title: "Battery",
-                systemImage: "battery.75",
-                isSelected: !showsPetSettings && !showsFanStatus && store.selectedMetric == .battery
-            ) {
-                store.selectedMetric = .battery
-                alphaMetrics.recordMetricGlance(.battery)
-                showsPetSettings = false
-                showsFanStatus = false
+            if store.codexIntegrationEnabled {
+                navigationButton(
+                    title: "Codex",
+                    systemImage: "chevron.left.forwardslash.chevron.right",
+                    isSelected: !showsPetSettings && !showsFanStatus && store.selectedMetric == .codexAllowance
+                ) {
+                    store.selectedMetric = .codexAllowance
+                    alphaMetrics.recordMetricGlance(.codexAllowance)
+                    showsPetSettings = false
+                    showsFanStatus = false
+                }
             }
 
             navigationButton(
@@ -188,17 +190,15 @@ struct StatusPanelView: View {
                 showsFanStatus = false
             }
 
-            if store.codexIntegrationEnabled {
-                navigationButton(
-                    title: "Codex",
-                    systemImage: "chevron.left.forwardslash.chevron.right",
-                    isSelected: !showsPetSettings && !showsFanStatus && store.selectedMetric == .codexAllowance
-                ) {
-                    store.selectedMetric = .codexAllowance
-                    alphaMetrics.recordMetricGlance(.codexAllowance)
-                    showsPetSettings = false
-                    showsFanStatus = false
-                }
+            navigationButton(
+                title: "Battery",
+                systemImage: "battery.75",
+                isSelected: !showsPetSettings && !showsFanStatus && store.selectedMetric == .battery
+            ) {
+                store.selectedMetric = .battery
+                alphaMetrics.recordMetricGlance(.battery)
+                showsPetSettings = false
+                showsFanStatus = false
             }
 
             navigationButton(
@@ -263,7 +263,7 @@ struct StatusPanelView: View {
                 .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(store.selectedMetric.displayName)
+                    Text(summaryTitle)
                         .font(.headline)
 
                     Text(primaryStatus)
@@ -722,7 +722,21 @@ struct StatusPanelView: View {
     private var primaryStatus: String {
         switch store.selectedMetric {
         case .battery:
-            return store.batteryState.chargePercent.map { "\($0)%" } ?? "Unavailable"
+            if let estimate = store.batteryState.estimatedUsageSeconds,
+               let formatted = BatteryUsageEstimateFormatter.displayString(seconds: estimate) {
+                return formatted
+            }
+            if store.batteryState.isCharging {
+                return "Charging"
+            }
+            switch store.batteryState.powerSource {
+            case .adapter:
+                return "On power"
+            case .battery:
+                return "Estimating…"
+            case .unknown:
+                return "Unavailable"
+            }
         case .memoryUsage:
             return store.memoryUsageState.isAvailable
                 ? "\(store.memoryUsageState.usagePercent)%"
@@ -736,6 +750,9 @@ struct StatusPanelView: View {
     private var secondaryStatus: String {
         switch store.selectedMetric {
         case .battery:
+            if let percent = store.batteryState.chargePercent {
+                return "\(percent)% battery · \(batteryStatus)"
+            }
             return batteryStatus
         case .memoryUsage:
             guard store.memoryUsageState.isAvailable else {
@@ -746,6 +763,10 @@ struct StatusPanelView: View {
             return store.codexAllowanceState.primary.map { "\($0.label) window" }
                 ?? "Optional local integration"
         }
+    }
+
+    private var summaryTitle: String {
+        store.selectedMetric == .battery ? "Estimated usage left" : store.selectedMetric.displayName
     }
 
     private var selectedSeverity: DeviceSeverity {

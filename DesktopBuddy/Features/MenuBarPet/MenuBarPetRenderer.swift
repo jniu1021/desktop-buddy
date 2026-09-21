@@ -162,7 +162,12 @@ enum MenuBarStatusAccessibility {
                 case .critical: "critical"
                 case .unavailable: "unavailable"
                 }
-                status = "Battery " + String(percent) + " percent, " + level
+                if let estimate = battery.estimatedUsageSeconds,
+                   let duration = BatteryUsageEstimateFormatter.accessibilityString(seconds: estimate) {
+                    status = "Battery estimated usage left " + duration + ", " + String(percent) + " percent, " + level
+                } else {
+                    status = "Battery " + String(percent) + " percent, " + level
+                }
             } else {
                 status = "Battery unavailable"
             }

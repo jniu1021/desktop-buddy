@@ -61,6 +61,21 @@ final class MenuBarStatusAccessibilityTests: XCTestCase {
         ), "Desktop Buddy. Battery unavailable. Menu idle.")
     }
 
+    func testBatteryAnnouncesEstimatedUsageLeftWhenAvailable() {
+        let battery = BatteryState(
+            chargePercent: 53,
+            isCharging: false,
+            powerSource: .battery,
+            condition: .normal,
+            estimatedUsageSeconds: 7_500
+        )
+
+        XCTAssertEqual(MenuBarStatusAccessibility.label(
+            metric: .battery, battery: battery, memory: .unavailable,
+            memoryLevel: .normal, codex: .notConfigured
+        ), "Desktop Buddy. Battery estimated usage left 2 hours 5 minutes, 53 percent, normal. Menu idle.")
+    }
+
     func testPresentationStateIsIncludedInTheSpokenMenuStatus() {
         XCTAssertEqual(MenuBarStatusAccessibility.label(
             metric: .battery, battery: .unavailable, memory: .unavailable,

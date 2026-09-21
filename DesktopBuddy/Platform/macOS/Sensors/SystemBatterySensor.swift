@@ -12,7 +12,8 @@ struct SystemBatterySensor: BatterySensing {
             maximumCapacity: snapshot.maximumCapacity,
             isCharging: snapshot.isCharging,
             isPresent: snapshot.isPresent,
-            isOnACPower: snapshot.isOnACPower
+            isOnACPower: snapshot.isOnACPower,
+            estimatedUsageSeconds: snapshot.estimatedUsageSeconds
         )
     }
 
@@ -36,7 +37,8 @@ struct SystemBatterySensor: BatterySensing {
                 maximumCapacity: description[kIOPSMaxCapacityKey] as? Int,
                 isCharging: description[kIOPSIsChargingKey] as? Bool ?? false,
                 isPresent: isPresent,
-                isOnACPower: description[kIOPSPowerSourceStateKey] as? String == kIOPSACPowerValue
+                isOnACPower: description[kIOPSPowerSourceStateKey] as? String == kIOPSACPowerValue,
+                estimatedUsageSeconds: IOPSGetTimeRemainingEstimate()
             )
         }
 
@@ -49,5 +51,6 @@ struct SystemBatterySensor: BatterySensing {
         let isCharging: Bool
         let isPresent: Bool
         let isOnACPower: Bool
+        let estimatedUsageSeconds: TimeInterval
     }
 }
