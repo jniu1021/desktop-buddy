@@ -23,6 +23,7 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
     private var focusTask: Task<Void, Never>?
     private var fullscreenTask: Task<Void, Never>?
     private var noticePresentationTask: Task<Void, Never>?
+    private var codexLifecycleRefreshTask: Task<Void, Never>?
     private var runtimeLifecycleState: RuntimeLifecycleState = .active
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     private let popover = NSPopover()
@@ -98,6 +99,8 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
         fullscreenTask = nil
         noticePresentationTask?.cancel()
         noticePresentationTask = nil
+        codexLifecycleRefreshTask?.cancel()
+        codexLifecycleRefreshTask = nil
         alphaMetrics.stopSession()
         stateStore.stop()
         animationPlayer.stop()
@@ -292,6 +295,12 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
                 self?.handleRuntimeLifecycle(.systemDidWake)
             }
             .store(in: &subscriptions)
+
+        center.publisher(for: NSWorkspace.screensDidWakeNotification)
+            .sink { [weak self] _ in
+                self?.refreshCodexAfterScreenWake()
+            }
+            .store(in: &subscriptions)
     }
 
     private func observeFocusSuppression() {
@@ -336,6 +345,8 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
             fullscreenTask = nil
             noticePresentationTask?.cancel()
             noticePresentationTask = nil
+            codexLifecycleRefreshTask?.cancel()
+            codexLifecycleRefreshTask = nil
             noticeBubble.hide()
             stateStore.stop()
             animationPlayer.stop()
@@ -348,6 +359,14 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
             reconcileActivityConsent()
         case nil:
             break
+        }
+    }
+
+    private func refreshCodexAfterScreenWake() {
+        guard runtimeLifecycleState == .active else { return }
+        codexLifecycleRefreshTask?.cancel()
+        codexLifecycleRefreshTask = Task { [weak self] in
+            await self?.stateStore.refreshCodexAllowance(trigger: .screenWake)
         }
     }
 

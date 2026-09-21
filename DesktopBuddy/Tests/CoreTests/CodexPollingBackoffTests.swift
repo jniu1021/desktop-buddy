@@ -2,6 +2,41 @@ import XCTest
 @testable import DesktopBuddy
 
 final class CodexPollingBackoffTests: XCTestCase {
+    func testLifecycleRefreshesAtStartupAndAfterAnIndependentScreenWake() {
+        let now = Date(timeIntervalSince1970: 10_000)
+
+        XCTAssertTrue(CodexRefreshPolicy.shouldRefresh(
+            for: .startupOrResume,
+            lastRefreshStartedAt: now,
+            now: now
+        ))
+        XCTAssertTrue(CodexRefreshPolicy.shouldRefresh(
+            for: .screenWake,
+            lastRefreshStartedAt: now.addingTimeInterval(-6),
+            now: now
+        ))
+    }
+
+    func testScreenWakeCoalescesWithAJustStartedResumeRefresh() {
+        let now = Date(timeIntervalSince1970: 10_000)
+
+        XCTAssertFalse(CodexRefreshPolicy.shouldRefresh(
+            for: .screenWake,
+            lastRefreshStartedAt: now.addingTimeInterval(-4.9),
+            now: now
+        ))
+        XCTAssertTrue(CodexRefreshPolicy.shouldRefresh(
+            for: .screenWake,
+            lastRefreshStartedAt: now.addingTimeInterval(-5),
+            now: now
+        ))
+        XCTAssertTrue(CodexRefreshPolicy.shouldRefresh(
+            for: .manual,
+            lastRefreshStartedAt: now,
+            now: now
+        ))
+    }
+
     func testRepeatedFailuresBackOffAndSuccessRestoresNormalCadence() {
         var backoff = CodexPollingBackoff()
 

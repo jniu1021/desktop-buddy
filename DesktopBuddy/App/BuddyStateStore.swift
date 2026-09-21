@@ -47,6 +47,7 @@ final class BuddyStateStore: ObservableObject {
     private var refreshTask: Task<Void, Never>?
     private var memoryUsageTask: Task<Void, Never>?
     private var codexTask: Task<Void, Never>?
+    private var lastCodexRefreshStartedAt: Date?
     private var memoryUsageClassifier = MemoryUsageLevelClassifier()
     private var memorySamplingIntervalGate = MemorySamplingIntervalGate()
 
@@ -121,8 +122,17 @@ final class BuddyStateStore: ObservableObject {
         applyMemoryUsage(await memoryUsageState, now: Date())
     }
 
-    func refreshCodexAllowance() async {
+    func refreshCodexAllowance(
+        trigger: CodexRefreshTrigger = .manual,
+        now: Date = Date()
+    ) async {
         guard codexIntegrationEnabled else { return }
+        guard CodexRefreshPolicy.shouldRefresh(
+            for: trigger,
+            lastRefreshStartedAt: lastCodexRefreshStartedAt,
+            now: now
+        ) else { return }
+        lastCodexRefreshStartedAt = now
         if codexAllowanceState.primary == nil {
             codexAllowanceState = .loading
         }
@@ -139,10 +149,12 @@ final class BuddyStateStore: ObservableObject {
         guard refreshTask != nil, codexIntegrationEnabled, codexTask == nil else { return }
         codexTask = Task { [weak self] in
             var backoff = CodexPollingBackoff()
+            var trigger = CodexRefreshTrigger.startupOrResume
             while !Task.isCancelled {
-                await self?.refreshCodexAllowance()
+                await self?.refreshCodexAllowance(trigger: trigger)
                 guard let self, self.codexIntegrationEnabled, !Task.isCancelled else { return }
                 let delay = backoff.nextDelay(after: self.codexAllowanceState.availability)
+                trigger = .scheduled
                 do {
                     try await Task.sleep(for: delay)
                 } catch {

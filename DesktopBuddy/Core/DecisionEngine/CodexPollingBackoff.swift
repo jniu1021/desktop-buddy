@@ -1,5 +1,25 @@
 import Foundation
 
+enum CodexRefreshTrigger: Equatable, Sendable {
+    case startupOrResume
+    case screenWake
+    case scheduled
+    case manual
+}
+
+enum CodexRefreshPolicy {
+    static let screenWakeCoalescingInterval: TimeInterval = 5
+
+    static func shouldRefresh(
+        for trigger: CodexRefreshTrigger,
+        lastRefreshStartedAt: Date?,
+        now: Date
+    ) -> Bool {
+        guard trigger == .screenWake, let lastRefreshStartedAt else { return true }
+        return now.timeIntervalSince(lastRefreshStartedAt) >= screenWakeCoalescingInterval
+    }
+}
+
 struct CodexPollingBackoff: Equatable, Sendable {
     private(set) var consecutiveFailures = 0
 
