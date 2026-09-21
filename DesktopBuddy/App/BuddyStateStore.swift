@@ -8,6 +8,7 @@ final class BuddyStateStore: ObservableObject {
     @Published private(set) var memoryUsageLevel: MemoryUsageLevel = .normal
     @Published private(set) var codexAllowanceState: CodexAllowanceState = .notConfigured
     @Published private(set) var fanReadoutState: FanReadoutState = .unavailable
+    @Published private(set) var launchAtLoginStatus: LaunchAtLoginStatus
     @Published private(set) var lastUpdatedAt: Date?
     @Published var onboardingCompleted: Bool {
         didSet { preferences.onboardingCompleted = onboardingCompleted }
@@ -44,6 +45,7 @@ final class BuddyStateStore: ObservableObject {
     private let fanSensor: any FanSensing
     private let lowPowerModeEnabled: @Sendable () -> Bool
     private let preferences: any PreferencesStoring
+    private let launchAtLoginManager: any LaunchAtLoginManaging
     private var refreshTask: Task<Void, Never>?
     private var memoryUsageTask: Task<Void, Never>?
     private var codexTask: Task<Void, Never>?
@@ -57,7 +59,8 @@ final class BuddyStateStore: ObservableObject {
         codexAllowanceSensor: any CodexAllowanceSensing,
         fanSensor: any FanSensing,
         lowPowerModeEnabled: @escaping @Sendable () -> Bool,
-        preferences: any PreferencesStoring
+        preferences: any PreferencesStoring,
+        launchAtLoginManager: any LaunchAtLoginManaging
     ) {
         self.batterySensor = batterySensor
         self.memoryUsageSensor = memoryUsageSensor
@@ -65,6 +68,8 @@ final class BuddyStateStore: ObservableObject {
         self.fanSensor = fanSensor
         self.lowPowerModeEnabled = lowPowerModeEnabled
         self.preferences = preferences
+        self.launchAtLoginManager = launchAtLoginManager
+        self.launchAtLoginStatus = launchAtLoginManager.status
         self.onboardingCompleted = preferences.onboardingCompleted
         self.selectedMetric = preferences.codexIntegrationEnabled
             ? preferences.selectedMetric
@@ -143,6 +148,14 @@ final class BuddyStateStore: ObservableObject {
 
     func refreshFanReadings() async {
         fanReadoutState = await fanSensor.currentState()
+    }
+
+    func refreshLaunchAtLoginStatus() {
+        launchAtLoginStatus = launchAtLoginManager.status
+    }
+
+    func setLaunchAtLoginEnabled(_ enabled: Bool) {
+        launchAtLoginStatus = launchAtLoginManager.setEnabled(enabled)
     }
 
     private func startCodexPolling() {

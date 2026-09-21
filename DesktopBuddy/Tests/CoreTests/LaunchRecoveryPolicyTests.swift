@@ -4,6 +4,13 @@ import XCTest
 
 @MainActor
 final class LaunchRecoveryPolicyTests: XCTestCase {
+    func testLaunchAtLoginStatusDistinguishesEnabledIntentFromAvailability() {
+        XCTAssertFalse(LaunchAtLoginStatus.disabled.isRequested)
+        XCTAssertTrue(LaunchAtLoginStatus.enabled.isRequested)
+        XCTAssertTrue(LaunchAtLoginStatus.requiresApproval.isRequested)
+        XCTAssertFalse(LaunchAtLoginStatus.unavailable.isRequested)
+    }
+
     func testApplicationCoordinatorDoesNotStartInsideXCTestHost() {
         XCTAssertTrue(ApplicationLaunchPolicy.shouldStartCoordinator(environment: [:]))
         XCTAssertFalse(ApplicationLaunchPolicy.shouldStartCoordinator(environment: [

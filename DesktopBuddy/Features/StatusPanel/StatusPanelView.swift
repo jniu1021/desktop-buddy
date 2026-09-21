@@ -526,6 +526,20 @@ struct StatusPanelView: View {
                     .fixedSize(horizontal: false, vertical: true)
 
                 Toggle(
+                    "Launch Desktop Buddy at login",
+                    isOn: Binding(
+                        get: { store.launchAtLoginStatus.isRequested },
+                        set: { store.setLaunchAtLoginEnabled($0) }
+                    )
+                )
+                .disabled(store.launchAtLoginStatus == .unavailable)
+
+                Text(launchAtLoginExplanation)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Toggle(
                     "Show desktop pet",
                     isOn: Binding(
                         get: {
@@ -640,6 +654,22 @@ struct StatusPanelView: View {
         .padding(18)
         .frame(maxWidth: .infinity)
         .background(.quaternary, in: RoundedRectangle(cornerRadius: 12))
+        .onAppear {
+            store.refreshLaunchAtLoginStatus()
+        }
+    }
+
+    private var launchAtLoginExplanation: String {
+        switch store.launchAtLoginStatus {
+        case .disabled:
+            return "Optional. When enabled, macOS starts Desktop Buddy after you log in so device and Codex status can refresh automatically."
+        case .enabled:
+            return "Desktop Buddy will start after you log in and refresh enabled status sources immediately."
+        case .requiresApproval:
+            return "macOS needs approval in System Settings → General → Login Items before Desktop Buddy can start automatically."
+        case .unavailable:
+            return "Launch at login is unavailable in this build. You can still open Desktop Buddy manually."
+        }
     }
 
     private var footer: some View {

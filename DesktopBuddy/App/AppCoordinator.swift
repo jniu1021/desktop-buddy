@@ -36,7 +36,8 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
             codexAllowanceSensor: container.codexAllowanceSensor,
             fanSensor: container.fanSensor,
             lowPowerModeEnabled: container.lowPowerModeEnabled,
-            preferences: container.preferences
+            preferences: container.preferences,
+            launchAtLoginManager: container.launchAtLoginManager
         )
         let animationPlayer = PetAnimationPlayer(preferences: container.preferences)
         let petPresentation = PetPresentationStore()

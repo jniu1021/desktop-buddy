@@ -64,6 +64,8 @@
 		C10000000000000000000038 /* LaunchRecoveryPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000019 /* LaunchRecoveryPolicy.swift */; };
 		C10000000000000000000039 /* SessionLifecyclePersisting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001A /* SessionLifecyclePersisting.swift */; };
 		C1000000000000000000003A /* UserDefaultsSessionLifecycleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001B /* UserDefaultsSessionLifecycleRepository.swift */; };
+		C1000000000000000000003B /* LaunchAtLoginManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001D /* LaunchAtLoginManaging.swift */; };
+		C1000000000000000000003C /* SystemLaunchAtLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001E /* SystemLaunchAtLoginManager.swift */; };
 		D10000000000000000000001 /* BatteryStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000001 /* BatteryStateTests.swift */; };
 		D10000000000000000000002 /* UserDefaultsPreferencesStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* UserDefaultsPreferencesStoreTests.swift */; };
 		D10000000000000000000003 /* SystemBatterySensorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* SystemBatterySensorTests.swift */; };
@@ -174,6 +176,8 @@
 		D6000000000000000000001A /* SessionLifecyclePersisting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionLifecyclePersisting.swift; sourceTree = "<group>"; };
 		D6000000000000000000001B /* UserDefaultsSessionLifecycleRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsSessionLifecycleRepository.swift; sourceTree = "<group>"; };
 		D6000000000000000000001C /* LaunchRecoveryPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchRecoveryPolicyTests.swift; sourceTree = "<group>"; };
+		D6000000000000000000001D /* LaunchAtLoginManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginManaging.swift; sourceTree = "<group>"; };
+		D6000000000000000000001E /* SystemLaunchAtLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemLaunchAtLoginManager.swift; sourceTree = "<group>"; };
 		F10000000000000000000001 /* DesktopBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DesktopBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F10000000000000000000002 /* DesktopBuddyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DesktopBuddyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -270,6 +274,7 @@
 				D60000000000000000000011 /* AlphaMetricsPersisting.swift */,
 				D60000000000000000000016 /* LocalDiagnosticRecording.swift */,
 				D6000000000000000000001A /* SessionLifecyclePersisting.swift */,
+				D6000000000000000000001D /* LaunchAtLoginManaging.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -307,6 +312,7 @@
 				EB1000000000000000000001 /* Activity */,
 				EB2000000000000000000001 /* CodexIntegration */,
 				D60000000000000000000017 /* OSLogDiagnosticRecorder.swift */,
+				D6000000000000000000001E /* SystemLaunchAtLoginManager.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -580,6 +586,8 @@
 				C10000000000000000000038 /* LaunchRecoveryPolicy.swift in Sources */,
 				C10000000000000000000039 /* SessionLifecyclePersisting.swift in Sources */,
 				C1000000000000000000003A /* UserDefaultsSessionLifecycleRepository.swift in Sources */,
+				C1000000000000000000003B /* LaunchAtLoginManaging.swift in Sources */,
+				C1000000000000000000003C /* SystemLaunchAtLoginManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

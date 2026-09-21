@@ -13,6 +13,7 @@ struct DependencyContainer {
     let alphaMetrics: any AlphaMetricsPersisting
     let diagnostics: any LocalDiagnosticRecording
     let sessionLifecycle: any SessionLifecyclePersisting
+    let launchAtLoginManager: any LaunchAtLoginManaging
 
     static func live() -> DependencyContainer {
         let diagnostics = OSLogDiagnosticRecorder()
@@ -30,7 +31,8 @@ struct DependencyContainer {
             preferences: UserDefaultsPreferencesStore(),
             alphaMetrics: UserDefaultsAlphaMetricsRepository(),
             diagnostics: diagnostics,
-            sessionLifecycle: UserDefaultsSessionLifecycleRepository()
+            sessionLifecycle: UserDefaultsSessionLifecycleRepository(),
+            launchAtLoginManager: SystemLaunchAtLoginManager()
         )
     }
 }
