@@ -37,6 +37,32 @@ final class CodexPollingBackoffTests: XCTestCase {
         ))
     }
 
+    func testNetworkRecoveryCoalescesWithRecentLifecycleRefresh() {
+        let now = Date(timeIntervalSince1970: 10_000)
+
+        XCTAssertFalse(CodexRefreshPolicy.shouldRefresh(
+            for: .networkRecovery,
+            lastRefreshStartedAt: now.addingTimeInterval(-4.9),
+            now: now
+        ))
+        XCTAssertTrue(CodexRefreshPolicy.shouldRefresh(
+            for: .networkRecovery,
+            lastRefreshStartedAt: now.addingTimeInterval(-5),
+            now: now
+        ))
+    }
+
+    func testNetworkRecoveryRequiresUnavailableToAvailableTransition() {
+        var detector = NetworkRecoveryDetector()
+
+        XCTAssertFalse(detector.update(.available), "Initial connectivity is only a baseline")
+        XCTAssertFalse(detector.update(.available), "Duplicate connectivity must not refresh")
+        XCTAssertFalse(detector.update(.unavailable))
+        XCTAssertFalse(detector.update(.unavailable))
+        XCTAssertTrue(detector.update(.available))
+        XCTAssertFalse(detector.update(.available))
+    }
+
     func testRepeatedFailuresBackOffAndSuccessRestoresNormalCadence() {
         var backoff = CodexPollingBackoff()
 

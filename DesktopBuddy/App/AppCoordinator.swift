@@ -7,6 +7,7 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
     private let stateStore: BuddyStateStore
     private let fullscreenSensor: any FullscreenSensing
     private let foregroundActivitySensor: any ForegroundActivitySensing
+    private let networkAvailabilityMonitor: any NetworkAvailabilityMonitoring
     private let focusActivity = FocusActivityStore()
     private let animationPlayer: PetAnimationPlayer
     private let petPresentation: PetPresentationStore
@@ -24,6 +25,8 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
     private var fullscreenTask: Task<Void, Never>?
     private var noticePresentationTask: Task<Void, Never>?
     private var codexLifecycleRefreshTask: Task<Void, Never>?
+    private var networkAvailabilityTask: Task<Void, Never>?
+    private var networkRecoveryDetector = NetworkRecoveryDetector()
     private var runtimeLifecycleState: RuntimeLifecycleState = .active
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
     private let popover = NSPopover()
@@ -46,6 +49,7 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
         self.stateStore = stateStore
         self.fullscreenSensor = container.fullscreenSensor
         self.foregroundActivitySensor = container.foregroundActivitySensor
+        self.networkAvailabilityMonitor = container.networkAvailabilityMonitor
         self.animationPlayer = animationPlayer
         self.petPresentation = petPresentation
         self.alphaMetrics = alphaMetrics
@@ -89,6 +93,7 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
             allowAutomaticRestore: launchRecoveryAction == .restoreNormally
         )
         stateStore.start()
+        startNetworkAvailabilityMonitoring()
         animationPlayer.start()
     }
 
@@ -102,6 +107,8 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
         noticePresentationTask = nil
         codexLifecycleRefreshTask?.cancel()
         codexLifecycleRefreshTask = nil
+        networkAvailabilityTask?.cancel()
+        networkAvailabilityTask = nil
         alphaMetrics.stopSession()
         stateStore.stop()
         animationPlayer.stop()
@@ -364,10 +371,33 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
     }
 
     private func refreshCodexAfterScreenWake() {
+        triggerCodexLifecycleRefresh(.screenWake)
+    }
+
+    private func refreshCodexAfterNetworkRecovery() {
+        triggerCodexLifecycleRefresh(.networkRecovery)
+    }
+
+    private func triggerCodexLifecycleRefresh(_ trigger: CodexRefreshTrigger) {
         guard runtimeLifecycleState == .active else { return }
-        codexLifecycleRefreshTask?.cancel()
+        guard codexLifecycleRefreshTask == nil else { return }
         codexLifecycleRefreshTask = Task { [weak self] in
-            await self?.stateStore.refreshCodexAllowance(trigger: .screenWake)
+            guard let self else { return }
+            await stateStore.refreshCodexAllowance(trigger: trigger)
+            codexLifecycleRefreshTask = nil
+        }
+    }
+
+    private func startNetworkAvailabilityMonitoring() {
+        guard networkAvailabilityTask == nil else { return }
+        let updates = networkAvailabilityMonitor.availabilityUpdates()
+        networkAvailabilityTask = Task { [weak self] in
+            for await availability in updates {
+                guard let self, !Task.isCancelled else { return }
+                if networkRecoveryDetector.update(availability) {
+                    refreshCodexAfterNetworkRecovery()
+                }
+            }
         }
     }
 

@@ -3,20 +3,22 @@ import Foundation
 enum CodexRefreshTrigger: Equatable, Sendable {
     case startupOrResume
     case screenWake
+    case networkRecovery
     case scheduled
     case manual
 }
 
 enum CodexRefreshPolicy {
-    static let screenWakeCoalescingInterval: TimeInterval = 5
+    static let lifecycleCoalescingInterval: TimeInterval = 5
 
     static func shouldRefresh(
         for trigger: CodexRefreshTrigger,
         lastRefreshStartedAt: Date?,
         now: Date
     ) -> Bool {
-        guard trigger == .screenWake, let lastRefreshStartedAt else { return true }
-        return now.timeIntervalSince(lastRefreshStartedAt) >= screenWakeCoalescingInterval
+        let shouldCoalesce = trigger == .screenWake || trigger == .networkRecovery
+        guard shouldCoalesce, let lastRefreshStartedAt else { return true }
+        return now.timeIntervalSince(lastRefreshStartedAt) >= lifecycleCoalescingInterval
     }
 }
 

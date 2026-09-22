@@ -6,6 +6,7 @@ struct DependencyContainer {
     let memoryUsageSensor: any MemoryUsageSensing
     let fullscreenSensor: any FullscreenSensing
     let foregroundActivitySensor: any ForegroundActivitySensing
+    let networkAvailabilityMonitor: any NetworkAvailabilityMonitoring
     let codexAllowanceSensor: any CodexAllowanceSensing
     let fanSensor: any FanSensing
     let lowPowerModeEnabled: @Sendable () -> Bool
@@ -22,6 +23,7 @@ struct DependencyContainer {
             memoryUsageSensor: SystemMemoryUsageSensor(),
             fullscreenSensor: ForegroundFullscreenSensor(),
             foregroundActivitySensor: SystemForegroundActivitySensor(),
+            networkAvailabilityMonitor: SystemNetworkAvailabilityMonitor(),
             codexAllowanceSensor: CodexAppServerAllowanceSensor(
                 executableURL: CodexExecutableLocator.locate(),
                 diagnostics: diagnostics

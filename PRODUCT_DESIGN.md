@@ -209,6 +209,12 @@ No language model schedules routine notifications.
 | Memory usage, compression, swap, and OS pressure | Device support | Latest sample plus aggregated daily events | Low |
 | Battery state | Status and device support | Aggregated daily events | Low |
 | Codex quota window | Selected status | Latest value plus optional daily aggregate | Medium |
+| Network path availability | Refresh Codex quota after connectivity recovery | Not retained | Low |
+
+Network path availability is a lifecycle trigger, not a connectivity probe: the app uses
+the operating system's path status, makes no request to a test endpoint, and reacts only
+to an observed unavailable-to-available transition. Repeated available updates and the
+initial available state do not trigger a refresh.
 
 ### Memory status decision
 

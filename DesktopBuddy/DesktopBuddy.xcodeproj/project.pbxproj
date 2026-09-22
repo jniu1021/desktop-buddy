@@ -66,6 +66,8 @@
 		C1000000000000000000003A /* UserDefaultsSessionLifecycleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001B /* UserDefaultsSessionLifecycleRepository.swift */; };
 		C1000000000000000000003B /* LaunchAtLoginManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001D /* LaunchAtLoginManaging.swift */; };
 		C1000000000000000000003C /* SystemLaunchAtLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001E /* SystemLaunchAtLoginManager.swift */; };
+		C1000000000000000000003D /* NetworkAvailabilityMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001F /* NetworkAvailabilityMonitoring.swift */; };
+		C1000000000000000000003E /* SystemNetworkAvailabilityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000020 /* SystemNetworkAvailabilityMonitor.swift */; };
 		D10000000000000000000001 /* BatteryStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000001 /* BatteryStateTests.swift */; };
 		D10000000000000000000002 /* UserDefaultsPreferencesStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* UserDefaultsPreferencesStoreTests.swift */; };
 		D10000000000000000000003 /* SystemBatterySensorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* SystemBatterySensorTests.swift */; };
@@ -178,6 +180,8 @@
 		D6000000000000000000001C /* LaunchRecoveryPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchRecoveryPolicyTests.swift; sourceTree = "<group>"; };
 		D6000000000000000000001D /* LaunchAtLoginManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginManaging.swift; sourceTree = "<group>"; };
 		D6000000000000000000001E /* SystemLaunchAtLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemLaunchAtLoginManager.swift; sourceTree = "<group>"; };
+		D6000000000000000000001F /* NetworkAvailabilityMonitoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAvailabilityMonitoring.swift; sourceTree = "<group>"; };
+		D60000000000000000000020 /* SystemNetworkAvailabilityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemNetworkAvailabilityMonitor.swift; sourceTree = "<group>"; };
 		F10000000000000000000001 /* DesktopBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DesktopBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F10000000000000000000002 /* DesktopBuddyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DesktopBuddyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -275,6 +279,7 @@
 				D60000000000000000000016 /* LocalDiagnosticRecording.swift */,
 				D6000000000000000000001A /* SessionLifecyclePersisting.swift */,
 				D6000000000000000000001D /* LaunchAtLoginManaging.swift */,
+				D6000000000000000000001F /* NetworkAvailabilityMonitoring.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -342,6 +347,7 @@
 			children = (
 				C70000000000000000000001 /* ForegroundFullscreenSensor.swift */,
 				CD0000000000000000000001 /* SystemForegroundActivitySensor.swift */,
+				D60000000000000000000020 /* SystemNetworkAvailabilityMonitor.swift */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -588,6 +594,8 @@
 				C1000000000000000000003A /* UserDefaultsSessionLifecycleRepository.swift in Sources */,
 				C1000000000000000000003B /* LaunchAtLoginManaging.swift in Sources */,
 				C1000000000000000000003C /* SystemLaunchAtLoginManager.swift in Sources */,
+				C1000000000000000000003D /* NetworkAvailabilityMonitoring.swift in Sources */,
+				C1000000000000000000003E /* SystemNetworkAvailabilityMonitor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
