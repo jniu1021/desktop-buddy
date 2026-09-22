@@ -258,24 +258,31 @@ struct StatusPanelView: View {
             HStack(spacing: 16) {
                 PixelPigView(
                     severity: selectedSeverity,
-                    frameIndex: animationPlayer.frameIndex
+                    frameIndex: animationPlayer.frameIndex,
+                    pixelSize: 5,
+                    pixelSpacing: 1.5
                 )
                 .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(summaryTitle)
                         .font(.headline)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
 
                     Text(primaryStatus)
                         .font(.system(size: 28, weight: .semibold, design: .rounded))
                         .lineLimit(1)
-                        .minimumScaleFactor(0.65)
+                        .minimumScaleFactor(0.8)
 
                     Text(secondaryStatus)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .layoutPriority(1)
 
                 Spacer(minLength: 0)
             }
