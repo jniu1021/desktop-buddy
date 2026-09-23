@@ -68,6 +68,7 @@
 		C1000000000000000000003C /* SystemLaunchAtLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001E /* SystemLaunchAtLoginManager.swift */; };
 		C1000000000000000000003D /* NetworkAvailabilityMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001F /* NetworkAvailabilityMonitoring.swift */; };
 		C1000000000000000000003E /* SystemNetworkAvailabilityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000020 /* SystemNetworkAvailabilityMonitor.swift */; };
+		C1000000000000000000003F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000021 /* Assets.xcassets */; };
 		D10000000000000000000001 /* BatteryStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0000000000000000000001 /* BatteryStateTests.swift */; };
 		D10000000000000000000002 /* UserDefaultsPreferencesStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* UserDefaultsPreferencesStoreTests.swift */; };
 		D10000000000000000000003 /* SystemBatterySensorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* SystemBatterySensorTests.swift */; };
@@ -182,7 +183,8 @@
 		D6000000000000000000001E /* SystemLaunchAtLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemLaunchAtLoginManager.swift; sourceTree = "<group>"; };
 		D6000000000000000000001F /* NetworkAvailabilityMonitoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAvailabilityMonitoring.swift; sourceTree = "<group>"; };
 		D60000000000000000000020 /* SystemNetworkAvailabilityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemNetworkAvailabilityMonitor.swift; sourceTree = "<group>"; };
-		F10000000000000000000001 /* DesktopBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DesktopBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D60000000000000000000021 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Resources/Assets.xcassets; sourceTree = "<group>"; };
+		F10000000000000000000001 /* Desktop Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Desktop Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F10000000000000000000002 /* DesktopBuddyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DesktopBuddyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -211,6 +213,7 @@
 				E40000000000000000000001 /* Core */,
 				E80000000000000000000001 /* Platform */,
 				EC0000000000000000000001 /* Features */,
+				D60000000000000000000021 /* Assets.xcassets */,
 				EF0000000000000000000001 /* Tests */,
 				E20000000000000000000001 /* Products */,
 			);
@@ -219,7 +222,7 @@
 		E20000000000000000000001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F10000000000000000000001 /* DesktopBuddy.app */,
+				F10000000000000000000001 /* Desktop Buddy.app */,
 				F10000000000000000000002 /* DesktopBuddyTests.xctest */,
 			);
 			name = Products;
@@ -454,7 +457,7 @@
 			);
 			name = DesktopBuddy;
 			productName = DesktopBuddy;
-			productReference = F10000000000000000000001 /* DesktopBuddy.app */;
+			productReference = F10000000000000000000001 /* Desktop Buddy.app */;
 			productType = "com.apple.product-type.application";
 		};
 		F50000000000000000000002 /* DesktopBuddyTests */ = {
@@ -518,6 +521,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1000000000000000000003F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -677,12 +681,14 @@
 		F90000000000000000000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Desktop Buddy";
+				INFOPLIST_KEY_CFBundleName = "Desktop Buddy";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSUIElement = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -691,7 +697,8 @@
 				);
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.desktopbuddy.app;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = DesktopBuddy;
+				PRODUCT_NAME = "Desktop Buddy";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
@@ -702,6 +709,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -709,6 +717,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Desktop Buddy";
+				INFOPLIST_KEY_CFBundleName = "Desktop Buddy";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSUIElement = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -717,7 +726,8 @@
 				);
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.desktopbuddy.app;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = DesktopBuddy;
+				PRODUCT_NAME = "Desktop Buddy";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
@@ -735,7 +745,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DesktopBuddy.app/Contents/MacOS/DesktopBuddy";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Desktop Buddy.app/Contents/MacOS/Desktop Buddy";
 			};
 			name = Debug;
 		};
@@ -750,7 +760,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DesktopBuddy.app/Contents/MacOS/DesktopBuddy";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Desktop Buddy.app/Contents/MacOS/Desktop Buddy";
 			};
 			name = Release;
 		};

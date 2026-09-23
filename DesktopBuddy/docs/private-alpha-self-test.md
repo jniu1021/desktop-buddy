@@ -2,7 +2,7 @@
 
 **开始日期：** 2026-09-21  
 **建议时长：** 连续 3 个完整工作日  
-**测试对象：** `/Users/harryniu/Applications/Desktop Buddy Alpha.app`
+**测试对象：** `/Users/harryniu/Applications/Desktop Buddy.app`
 
 这份清单只验证当前已批准的本地核心。不要在自测期间加入情绪捕获、休息提议、
 日记、对话、AI synthesis、风扇写入或新的传感器。发现问题时先记录事实，不在测试中

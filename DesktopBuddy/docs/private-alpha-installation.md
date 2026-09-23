@@ -4,7 +4,7 @@
 **Scope:** Local developer-machine installation only
 
 DesktopBuddy `0.1` was archived in Release configuration, copied to
-`~/Applications/Desktop Buddy Alpha.app`, and launched from that installed location.
+`~/Applications/Desktop Buddy.app`, and launched from that installed location.
 
 ## Verified
 
@@ -19,6 +19,11 @@ DesktopBuddy `0.1` was archived in Release configuration, copied to
 - The bundle passes strict local code-signature structure verification.
 - The installed process starts successfully and uses the expected bundle identifier,
   `com.desktopbuddy.app`.
+- The product, executable, bundle display name, and installed filename consistently use
+  `Desktop Buddy`; Spotlight metadata resolves the installed app by both display name and
+  bundle identifier.
+- The Release bundle contains the compiled `AppIcon.icns` generated from the project's
+  standard macOS `AppIcon.appiconset`.
 - A normal macOS termination clears the active-session marker.
 - Relaunch from the installed location starts normally and does not enter unclean-exit
   recovery.
