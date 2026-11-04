@@ -89,6 +89,8 @@
 		D10000000000000000000012 /* AlphaMetricsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000014 /* AlphaMetricsTests.swift */; };
 		D10000000000000000000013 /* SystemForegroundActivitySensorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60000000000000000000015 /* SystemForegroundActivitySensorTests.swift */; };
 		D10000000000000000000014 /* LaunchRecoveryPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6000000000000000000001C /* LaunchRecoveryPolicyTests.swift */; };
+		DA1100000000000000000001 = {isa = PBXBuildFile; fileRef = DA1100000000000000000002; };
+		DA1100000000000000000003 = {isa = PBXBuildFile; fileRef = DA1100000000000000000004; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -186,6 +188,8 @@
 		D60000000000000000000021 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Resources/Assets.xcassets; sourceTree = "<group>"; };
 		F10000000000000000000001 /* Desktop Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Desktop Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F10000000000000000000002 /* DesktopBuddyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DesktopBuddyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA1100000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDiaryStore.swift; sourceTree = "<group>"; };
+		DA1100000000000000000004 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDiaryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				A90000000000000000000001 /* DesktopBuddyApp.swift */,
+                DA1100000000000000000002,
 				AA0000000000000000000001 /* AppDelegate.swift */,
 				AB0000000000000000000001 /* AppCoordinator.swift */,
 				A80000000000000000000001 /* DependencyContainer.swift */,
@@ -416,6 +421,7 @@
 		F00000000000000000000001 /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
+                DA1100000000000000000004,
 				AF0000000000000000000001 /* BatteryStateTests.swift */,
 				B00000000000000000000001 /* UserDefaultsPreferencesStoreTests.swift */,
 				B10000000000000000000001 /* SystemBatterySensorTests.swift */,
@@ -539,6 +545,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+                DA1100000000000000000001,
 				C10000000000000000000001 /* DesktopBuddyApp.swift in Sources */,
 				C10000000000000000000002 /* AppDelegate.swift in Sources */,
 				C10000000000000000000003 /* AppCoordinator.swift in Sources */,
@@ -607,6 +614,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+                DA1100000000000000000003,
 				D10000000000000000000001 /* BatteryStateTests.swift in Sources */,
 				D10000000000000000000002 /* UserDefaultsPreferencesStoreTests.swift in Sources */,
 				D10000000000000000000003 /* SystemBatterySensorTests.swift in Sources */,

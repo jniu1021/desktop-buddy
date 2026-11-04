@@ -4,6 +4,7 @@ import SwiftUI
 
 @MainActor
 final class AppCoordinator: NSObject, NSPopoverDelegate {
+    private let activityDiary: ActivityDiaryStore
     private let stateStore: BuddyStateStore
     private let fullscreenSensor: any FullscreenSensing
     private let foregroundActivitySensor: any ForegroundActivitySensing
@@ -46,6 +47,7 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
         let petPresentation = PetPresentationStore()
         let alphaMetrics = AlphaMetricsTracker(repository: container.alphaMetrics)
 
+        self.activityDiary = ActivityDiaryStore(sensor: container.foregroundActivitySensor)
         self.stateStore = stateStore
         self.fullscreenSensor = container.fullscreenSensor
         self.foregroundActivitySensor = container.foregroundActivitySensor
@@ -98,6 +100,7 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
     }
 
     func stop() {
+        activityDiary.stop()
         diagnostics.record(.applicationStopped)
         focusTask?.cancel()
         focusTask = nil
@@ -142,7 +145,8 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
                 edgePetController: edgePetController,
                 pendingNotices: pendingNotices,
                 focusActivity: focusActivity,
-                alphaMetrics: alphaMetrics
+                alphaMetrics: alphaMetrics,
+                activityDiary: activityDiary
             )
         )
     }
@@ -292,6 +296,13 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
         }
         .store(in: &subscriptions)
 
+        center.publisher(for: NSWorkspace.sessionDidResignActiveNotification)
+            .sink { [weak self] _ in self?.activityDiary.setSuspended(true) }
+            .store(in: &subscriptions)
+        center.publisher(for: NSWorkspace.sessionDidBecomeActiveNotification)
+            .sink { [weak self] _ in self?.activityDiary.setSuspended(false) }
+            .store(in: &subscriptions)
+
         center.publisher(for: NSWorkspace.willSleepNotification)
             .sink { [weak self] _ in
                 self?.handleRuntimeLifecycle(.systemWillSleep)
@@ -346,6 +357,7 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
 
         switch transition.action {
         case .suspend:
+            activityDiary.setSuspended(true)
             diagnostics.record(.systemWillSleep)
             focusTask?.cancel()
             focusTask = nil
@@ -359,6 +371,7 @@ final class AppCoordinator: NSObject, NSPopoverDelegate {
             stateStore.stop()
             animationPlayer.stop()
         case .resume:
+            activityDiary.setSuspended(false)
             diagnostics.record(.systemDidWake)
             stateStore.start()
             animationPlayer.start()

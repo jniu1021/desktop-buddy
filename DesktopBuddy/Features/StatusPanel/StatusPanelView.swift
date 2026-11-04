@@ -31,6 +31,7 @@ struct StatusPanelView: View {
     @ObservedObject var pendingNotices: PendingNoticeStore
     @ObservedObject var focusActivity: FocusActivityStore
     @ObservedObject var alphaMetrics: AlphaMetricsTracker
+    let activityDiary: ActivityDiaryStore
     @State private var isMemoryDetailsExpanded = false
     @State private var showsPetSettings = false
     @State private var showsFanStatus = false
@@ -56,6 +57,7 @@ struct StatusPanelView: View {
                             welcomeCard
                         }
                         summaryCard
+                        ActivityDiaryCard(diary: activityDiary)
 
                         if store.selectedMetric == .memoryUsage {
                             memoryDetailsButton
