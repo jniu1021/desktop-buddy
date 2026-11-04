@@ -47,13 +47,25 @@ struct ActivityDiaryLedger {
     }
 
     mutating func labelLastInterval(_ activity: DiaryActivity) {
-        guard let last = intervals.popLast() else { return }
-        // Only label the last ten seconds, not a whole merged multi-hour interval.
-        let cut = max(last.start, last.end.addingTimeInterval(-10))
-        if cut > last.start {
-            intervals.append(DiaryInterval(start: last.start, end: cut, activity: last.activity, source: last.source))
+        guard let end = intervals.last?.end else { return }
+        label(endingAt: end, activity: activity)
+    }
+
+    @discardableResult
+    mutating func label(endingAt end: Date, activity: DiaryActivity) -> Bool {
+        guard let index = intervals.firstIndex(where: { $0.start < end && $0.end >= end }) else { return false }
+        let original = intervals[index]
+        let cut = max(original.start, end.addingTimeInterval(-10))
+        var replacement: [DiaryInterval] = []
+        if original.start < cut {
+            replacement.append(DiaryInterval(start: original.start, end: cut, activity: original.activity, source: original.source))
         }
-        intervals.append(DiaryInterval(start: cut, end: last.end, activity: activity.rawValue, source: "self_report"))
+        replacement.append(DiaryInterval(start: cut, end: end, activity: activity.rawValue, source: "self_report"))
+        if end < original.end {
+            replacement.append(DiaryInterval(start: end, end: original.end, activity: original.activity, source: original.source))
+        }
+        intervals.replaceSubrange(index...index, with: replacement)
+        return true
     }
 
     func totals(on date: Date, calendar: Calendar = .current) -> [String: Double] {
@@ -68,8 +80,30 @@ struct ActivityDiaryLedger {
     }
 }
 
+struct DiaryReview: Codable, Equatable {
+    let end: Date
+    let prediction: String
+    let audioCue: String
+    var answer: String?
+}
+
+enum ActivityEvidenceFusion {
+    static func predict(screen: String?, screenAge: Double?, audio: String?, audioAge: Double?, sameApp: Bool) -> String {
+        guard sameApp, let screenAge, (0...45).contains(screenAge),
+              let screen, ["coding", "video", "meeting"].contains(screen) else { return "unknown" }
+        // Sound can corroborate, but never turns speech into a meeting on its own.
+        if screen == "meeting" {
+            guard let audioAge, (0...75).contains(audioAge), audio == "speech" else { return "unknown" }
+        }
+        return screen
+    }
+}
+
 @MainActor
 final class ActivityDiaryStore: ObservableObject {
+    @Published var recordTentativeEstimates = false
+    @Published private(set) var review: DiaryReview?
+    @Published private(set) var feedbackCount = 0
     @Published private(set) var enabled = false
     @Published private(set) var cue = "Disabled"
     @Published private(set) var totals: [String: Double] = [:]
@@ -83,6 +117,10 @@ final class ActivityDiaryStore: ObservableObject {
     private var ledger: ActivityDiaryLedger
     private var previous: Date?
     private var previousActivity = "unknown"
+    private var previousSource = "metadata"
+    private var latestReviewable: DiaryReview?
+    private var feedback: [DiaryReview] = []
+    private static let feedbackKey = "activityDiary.feedback.v1"
     private var task: Task<Void, Never>?
     private var samplesSinceSave = 0
     private var suspended = false
@@ -96,6 +134,9 @@ final class ActivityDiaryStore: ObservableObject {
         let recent = decoded.filter { $0.end >= Date().addingTimeInterval(-7 * 86400) }
         ledger = ActivityDiaryLedger(intervals: recent)
         totals = ledger.totals(on: Date())
+        feedback = defaults.data(forKey: Self.feedbackKey).flatMap { try? JSONDecoder().decode([DiaryReview].self, from: $0) } ?? []
+        feedback = Array(feedback.filter { $0.end >= Date().addingTimeInterval(-7 * 86400) }.suffix(1000))
+        feedbackCount = feedback.count
         // Persist pruning even if no new session is started.
         if decoded.count != recent.count { persist() }
     }
@@ -146,23 +187,42 @@ final class ActivityDiaryStore: ObservableObject {
                 audioProbe.sampleIfNeeded()
             }
         }
-        let activity = own ? "feedback_ui" : (possiblyAway ? "possibly_away" : "unknown")
+        let predicted = ActivityEvidenceFusion.predict(
+            screen: screenProbe.evidence?.activity,
+            screenAge: screenProbe.observedAt.map { now.timeIntervalSince($0) },
+            audio: audioProbe.cue?.category,
+            audioAge: audioProbe.observedAt.map { now.timeIntervalSince($0) },
+            sameApp: screenProbe.observedPID == NSWorkspace.shared.frontmostApplication?.processIdentifier)
+        let estimate = recordTentativeEstimates && predicted != "unknown" ? "tentative_" + predicted : "unknown"
+        let activity = own ? "feedback_ui" : (possiblyAway ? "possibly_away" : estimate)
         cue = own ? "Desktop Buddy is in front" : "\(category) · \(possiblyAway ? "possibly away" : "activity unknown")"
+        let source = activity.hasPrefix("tentative_") ? "screen_audio_heuristic_v1" : "metadata"
         if let previous {
             // A transition interval remains unknown rather than backfilling a new state.
             ledger.append(start: previous, end: now,
-                activity: previousActivity == activity ? activity : "unknown", source: "metadata")
+                activity: previousActivity == activity && previousSource == source ? activity : "unknown", source: previousSource == source ? source : "metadata")
             lastIntervalEnd = now
+            if !own, now.timeIntervalSince(previous) > 0, now.timeIntervalSince(previous) <= 20 {
+                latestReviewable = DiaryReview(end: now, prediction: predicted,
+                    audioCue: audioProbe.observedAt.map { now.timeIntervalSince($0) <= 75 } == true ? (audioProbe.cue?.category ?? "unknown") : "unknown")
+            }
         }
-        previous = now; previousActivity = activity
+        previous = now; previousActivity = activity; previousSource = source
         totals = ledger.totals(on: now)
         samplesSinceSave += 1
         if samplesSinceSave >= 6 { persist(); samplesSinceSave = 0 }
     }
 
+    func beginReview() { review = latestReviewable }
+
     func correct(_ activity: DiaryActivity) {
-        guard enabled, lastIntervalEnd != nil else { return }
-        ledger.labelLastInterval(activity)
+        guard var target = review, ledger.label(endingAt: target.end, activity: activity) else { return }
+        target.answer = activity.rawValue
+        feedback.removeAll { $0.end == target.end }
+        feedback.append(target)
+        feedback = Array(feedback.filter { $0.end >= Date().addingTimeInterval(-7 * 86400) }.suffix(1000))
+        feedbackCount = feedback.count
+        review = nil
         totals = ledger.totals(on: Date())
         persist()
     }
@@ -170,12 +230,15 @@ final class ActivityDiaryStore: ObservableObject {
     func clear() {
         ledger = ActivityDiaryLedger(); totals = [:]; lastIntervalEnd = nil; previous = nil
         defaults.removeObject(forKey: Self.key)
+        defaults.removeObject(forKey: Self.feedbackKey)
+        feedback = []; feedbackCount = 0; review = nil; latestReviewable = nil
     }
 
     func stop() { screenProbe.disable(); audioProbe.disable(); task?.cancel(); task = nil; previous = nil; persist() }
 
     private func persist() {
         if let data = try? JSONEncoder().encode(ledger.intervals) { defaults.set(data, forKey: Self.key) }
+        if let data = try? JSONEncoder().encode(feedback) { defaults.set(data, forKey: Self.feedbackKey) }
     }
 }
 
@@ -194,8 +257,13 @@ struct ActivityDiaryCard: View {
                 Text(diary.cue).font(.caption)
                 ScreenActivityCard(probe: diary.screenProbe)
                 SystemAudioCard(probe: diary.audioProbe)
-                if let end = diary.lastIntervalEnd {
-                    Text("What were you doing in the recorded interval ending at \(end.formatted(date: .omitted, time: .standard))? Your answer labels at most its final 10 seconds.")
+                Toggle("Record tentative activity estimates", isOn: $diary.recordTentativeEstimates)
+                Text("Optional heuristic estimates stay separate from confirmed activity. Meeting requires fresh speech and screen cues. No-input time remains possibly away.").font(.caption)
+                Button("Review recent task interval") { diary.beginReview(); submitted = false }
+                Text("Saved feedback: \(diary.feedbackCount)").font(.caption)
+                if let target = diary.review {
+                    let end = target.end
+                    Text("What were you doing in the recorded interval ending at \(end.formatted(date: .omitted, time: .standard))? This interval is frozen while you answer; labels at most its final 10 seconds.")
                         .font(.caption)
                     Picker("Activity", selection: $selected) {
                         ForEach(DiaryActivity.allCases, id: \.self) { Text($0.title).tag($0) }
@@ -212,7 +280,7 @@ struct ActivityDiaryCard: View {
                     Text("\(Int(diary.totals[key, default: 0] / 60)) min")
                 }.font(.caption)
             }
-            Text("Unknown and possibly-away time are not verified focus or verified absence. Screen evidence is a separate unvalidated preview; system audio is a separate unvalidated preview.").font(.caption).foregroundStyle(.secondary)
+            Text("Unknown and possibly-away time are not verified focus or verified absence. Tentative estimates are heuristic, not verified activity or focus. Feedback does not automatically retrain a model.").font(.caption).foregroundStyle(.secondary)
             Button("Clear diary…", role: .destructive) { confirmingClear = true }
                 .confirmationDialog("Delete all local activity diary intervals?", isPresented: $confirmingClear) {
                     Button("Delete diary", role: .destructive) { diary.clear() }

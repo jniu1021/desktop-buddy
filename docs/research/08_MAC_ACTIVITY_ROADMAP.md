@@ -47,3 +47,11 @@ Use a private repository. Commit working milestones after checks, then push expl
 ## Verification boundaries
 
 Stage 1 has build/unit-test validation. It still needs interactive usability checks and matched resource measurements. No new power or memory budget has been demonstrated, and no visual/audio model accuracy is claimed.
+
+### Stage 4 progress: frozen review and tentative estimates
+
+Implemented a review action that freezes a recent non-companion interval. A response splits/labels only the final ten seconds at that fixed endpoint, even while later samples continue. The system prediction at the endpoint and a coarse, recent audio cue are stored separately from the user's answer, capped at 1,000 responses and seven days. Clear diary removes both intervals and feedback. These responses are self-reports, not independently verified ground truth; visible cue previews can bias answers. No automatic model training occurs.
+
+An additional per-launch, off-by-default switch allows tentative heuristic durations to be recorded under separate `tentative_` categories. Screen cues must be at most 45 seconds old and associated with the current foreground process. Meeting requires a speech cue at most 75 seconds old; audio by itself never identifies a meeting. Inactive-input intervals remain possibly away, even if audio is playing, so passive activity remains a known failure case. Long inference intervals in Low Power Mode intentionally reduce estimate coverage. Self-report totals and tentative estimates remain distinguishable.
+
+Added `tools/research/profile_process.py` for matched, manually configured condition measurements (CPU-time delta and RSS). Build/tests are available; actual matched resource results are still pending and no power guarantee is established.

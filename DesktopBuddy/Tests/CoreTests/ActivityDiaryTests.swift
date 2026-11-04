@@ -75,3 +75,27 @@ final class AudioCueRulesTests: XCTestCase {
         XCTAssertEqual(AudioCueRules.coarse("silence", score: 0.95), "other_sound")
     }
 }
+
+final class ActivityFusionAndFeedbackTests: XCTestCase {
+    func testFrozenCorrectionDoesNotMoveToNewestInterval() {
+        var ledger = ActivityDiaryLedger()
+        for t in stride(from: 0, to: 40, by: 10) {
+            ledger.append(start: Date(timeIntervalSince1970: Double(t)), end: Date(timeIntervalSince1970: Double(t + 10)), activity: "unknown", source: "metadata")
+        }
+        XCTAssertTrue(ledger.label(endingAt: Date(timeIntervalSince1970: 20), activity: .reading))
+        XCTAssertEqual(ledger.intervals.last?.activity, "unknown")
+        XCTAssertEqual(ledger.intervals.first(where: { $0.activity == "reading" })?.end, Date(timeIntervalSince1970: 20))
+        XCTAssertEqual(ledger.intervals.reduce(0) { $0 + $1.seconds }, 40)
+    }
+    func testSpeechAloneDoesNotEstablishMeeting() {
+        XCTAssertEqual(ActivityEvidenceFusion.predict(screen: nil, screenAge: nil, audio: "speech", audioAge: 0, sameApp: true), "unknown")
+    }
+    func testMeetingRequiresFreshCorroboration() {
+        XCTAssertEqual(ActivityEvidenceFusion.predict(screen: "meeting", screenAge: 2, audio: "speech", audioAge: 4, sameApp: true), "meeting")
+        XCTAssertEqual(ActivityEvidenceFusion.predict(screen: "meeting", screenAge: 2, audio: "speech", audioAge: 100, sameApp: true), "unknown")
+    }
+    func testStaleOrDifferentAppScreenIsDiscarded() {
+        XCTAssertEqual(ActivityEvidenceFusion.predict(screen: "coding", screenAge: 46, audio: nil, audioAge: nil, sameApp: true), "unknown")
+        XCTAssertEqual(ActivityEvidenceFusion.predict(screen: "coding", screenAge: 2, audio: nil, audioAge: nil, sameApp: false), "unknown")
+    }
+}

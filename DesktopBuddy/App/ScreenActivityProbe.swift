@@ -29,6 +29,8 @@ final class ScreenActivityProbe: ObservableObject {
     @Published private(set) var status = "Screen analysis off"
     @Published private(set) var evidence: ScreenActivityEvidence?
     @Published private(set) var busy = false
+    private(set) var observedAt: Date?
+    private(set) var observedPID: pid_t?
     private var worker: Task<Void, Never>?
     private var generation = 0
 
@@ -45,10 +47,10 @@ final class ScreenActivityProbe: ObservableObject {
     func disable() {
         enabled = false; generation += 1
         // Allow an in-flight OS capture to finish, but discard its result.
-        evidence = nil; status = "Screen analysis off"
+        evidence = nil; observedAt = nil; observedPID = nil; status = "Screen analysis off"
     }
 
-    func invalidate() { generation += 1; evidence = nil }
+    func invalidate() { generation += 1; evidence = nil; observedAt = nil; observedPID = nil }
 
     func sampleIfNeeded() {
         guard enabled, !busy else { return }
@@ -94,6 +96,8 @@ final class ScreenActivityProbe: ObservableObject {
                 guard self.enabled, token == self.generation,
                       NSWorkspace.shared.frontmostApplication?.processIdentifier == pid else { return }
                 self.evidence = result
+                self.observedAt = Date()
+                self.observedPID = pid
                 self.status = "Tentative: \(result.activity) · \(Int(result.elapsedMS)) ms · \(result.reason)"
             } catch {
                 guard self.enabled, token == self.generation else { return }

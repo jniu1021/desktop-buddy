@@ -48,3 +48,13 @@ A 是静态立即策略；B 增加即时上下文；C 再增加历史。它们�
 ## 一键查看最近一段结果
 
 录制并停止后，双击本目录 `analyze.command`。脚本选择最近修改的完整会话，生成英文 JSON/HTML 报告并打开 HTML。仍在录制、缺少结束事件或损坏的文件不会被选中；没有候选或标签时会提示。报告不是实际送达效果。
+
+## macOS process profiling
+
+For matched conditions, close the status popover and use the same app build and task. Find the app PID in Activity Monitor. Configure the diary/screen/audio switches to match the condition name, then run:
+
+```sh
+python3 tools/research/profile_process.py --pid ACTUAL_PID --duration 180 --condition combined --output research-data/perf-combined.json
+```
+
+Repeat with `diary_off`, `metadata`, `screen`, and `audio` as appropriate. These are manually configured conditions, not switches controlled by the script. Record warm-up separately. Low Power Mode has a 180-second audio interval, so use multiple windows and verify that a burst occurred. The tool measures CPU-time delta and RSS for one process, not total system energy or physical footprint. No capture is performed by the profiler. No actual performance improvement is claimed until matched measurements exist.

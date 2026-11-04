@@ -80,6 +80,8 @@ private final class AudioAnalysisSink: NSObject, SCStreamOutput, SNResultsObserv
 final class SystemAudioProbe: ObservableObject {
     @Published private(set) var enabled = false
     @Published private(set) var busy = false
+    private(set) var cue: AudioCue?
+    private(set) var observedAt: Date?
     @Published private(set) var status = "System audio off"
     private var generation = 0
     private var stream: SCStream?
@@ -96,6 +98,7 @@ final class SystemAudioProbe: ObservableObject {
     func disable() { enabled = false; invalidate(); status = "System audio off" }
     func invalidate() {
         generation += 1
+        cue = nil; observedAt = nil
         worker?.cancel()
         status = enabled ? "Paused; old audio evidence discarded" : "System audio off"
     }
@@ -135,10 +138,11 @@ final class SystemAudioProbe: ObservableObject {
                 captured = nil; self.stream = nil
                 let (cue, failed) = await sink.finish()
                 guard self.enabled, token == self.generation, !Task.isCancelled else { return }
-                if failed { self.status = "Audio analysis unavailable; unknown" }
+                if failed { self.cue = nil; self.observedAt = nil; self.status = "Audio analysis unavailable; unknown" }
                 else if let cue {
+                    self.cue = cue; self.observedAt = Date()
                     self.status = "Last playback cue: \(cue.category). Model score \(String(format: "%.2f", cue.modelScore)); not activity confidence."
-                } else { self.status = "No classified audio received; not proof of silence or absence." }
+                } else { self.cue = nil; self.observedAt = nil; self.status = "No classified audio received; not proof of silence or absence." }
             } catch {
                 if let captured { try? await captured.stopCapture() }
                 self.stream = nil
