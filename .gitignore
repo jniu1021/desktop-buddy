@@ -5,3 +5,9 @@ DerivedData*/
 *.xcuserstate
 xcuserdata/
 *.profraw
+.research-build/
+research-data/
+
+__pycache__/
+# Participant-derived local results; publish only an explicitly reviewed summary.
+docs/research/06_RESULTS.md
