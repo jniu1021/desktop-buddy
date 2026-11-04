@@ -55,3 +55,11 @@ Implemented a review action that freezes a recent non-companion interval. A resp
 An additional per-launch, off-by-default switch allows tentative heuristic durations to be recorded under separate `tentative_` categories. Screen cues must be at most 45 seconds old and associated with the current foreground process. Meeting requires a speech cue at most 75 seconds old; audio by itself never identifies a meeting. Inactive-input intervals remain possibly away, even if audio is playing, so passive activity remains a known failure case. Long inference intervals in Low Power Mode intentionally reduce estimate coverage. Self-report totals and tentative estimates remain distinguishable.
 
 Added `tools/research/profile_process.py` for matched, manually configured condition measurements (CPU-time delta and RSS). Build/tests are available; actual matched resource results are still pending and no power guarantee is established.
+
+### Readiness and manual validation boundary
+
+Added local JSON export and an English descriptive feedback-analysis tool. Exports contain dates, interval categories, source markers and coarse prediction/answer pairs, so keep them private. No export or report is uploaded automatically. Reports distinguish unknown coverage from conditional accuracy and reject overlapping interval traces. Local retention trims the start of merged intervals at seven days, not only whole expired rows. Feedback survives a restart, but active sensing switches remain off by default.
+
+Review questions expire if the latest task interval is older than two minutes. Suspend/disable invalidates the review target. Foreground-app changes invalidate screen evidence and permit a new scheduled attempt. Added isolated lifecycle tests using a mock sensor and separate UserDefaults suites.
+
+Remaining manual validation: restart the latest build, explicitly grant screen/system-capture permission if needed, play known audio and visit known task windows, check pause/disable behavior, answer a few frozen questions, and export the diary. A matched performance run requires known switch settings and confirmation that intermittent capture actually occurred. An uncontrolled process resource observation cannot establish the cost of any sensor.

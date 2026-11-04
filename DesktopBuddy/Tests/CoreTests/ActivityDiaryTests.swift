@@ -99,3 +99,60 @@ final class ActivityFusionAndFeedbackTests: XCTestCase {
         XCTAssertEqual(ActivityEvidenceFusion.predict(screen: "coding", screenAge: 2, audio: nil, audioAge: nil, sameApp: false), "unknown")
     }
 }
+
+private final class DiaryCountingSensor: ForegroundActivitySensing {
+    var calls = 0
+    func currentSnapshot() -> ForegroundActivitySnapshot {
+        calls += 1
+        return ForegroundActivitySnapshot(bundleIdentifier: nil, secondsSinceLastInput: nil)
+    }
+}
+
+final class DiaryLifecycleTests: XCTestCase {
+    @MainActor
+    func testOptInSuspendResumeAndDisableGateSampling() {
+        let suite = "diary-tests-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let sensor = DiaryCountingSensor()
+        let store = ActivityDiaryStore(sensor: sensor, defaults: defaults)
+        defer { store.stop() }
+        store.sample()
+        XCTAssertEqual(sensor.calls, 0)
+        store.setEnabled(true)
+        XCTAssertEqual(sensor.calls, 1)
+        store.setSuspended(true)
+        store.sample()
+        XCTAssertEqual(sensor.calls, 1)
+        store.setSuspended(false)
+        XCTAssertEqual(sensor.calls, 2)
+        store.setEnabled(false)
+        store.sample()
+        XCTAssertEqual(sensor.calls, 2)
+        XCTAssertNil(store.review)
+    }
+
+    @MainActor
+    func testClearRemovesBothLocalDataStores() throws {
+        let suite = "diary-tests-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defer { defaults.removePersistentDomain(forName: suite) }
+        defaults.set(try JSONEncoder().encode([DiaryReview(end: Date(), prediction: "unknown", audioCue: "unknown", answer: "reading")]), forKey: "activityDiary.feedback.v1")
+        let store = ActivityDiaryStore(sensor: DiaryCountingSensor(), defaults: defaults)
+        XCTAssertEqual(store.feedbackCount, 1)
+        store.clear()
+        XCTAssertEqual(store.feedbackCount, 0)
+        XCTAssertNil(defaults.data(forKey: "activityDiary.feedback.v1"))
+        XCTAssertNil(defaults.data(forKey: "activityDiary.intervals.v1"))
+    }
+}
+
+final class DiaryRetentionTests: XCTestCase {
+    func testLongMergedIntervalIsTrimmedAtRetentionBoundary() {
+        let end = Date(timeIntervalSince1970: 10 * 86400)
+        var ledger = ActivityDiaryLedger(intervals: [DiaryInterval(start: Date(timeIntervalSince1970: 0), end: end.addingTimeInterval(-10), activity: "unknown", source: "metadata")])
+        ledger.append(start: end.addingTimeInterval(-10), end: end, activity: "unknown", source: "metadata")
+        XCTAssertEqual(ledger.intervals.count, 1)
+        XCTAssertEqual(ledger.intervals[0].seconds, 7 * 86400)
+    }
+}

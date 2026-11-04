@@ -1,6 +1,7 @@
 import AppKit
 import Combine
 import SwiftUI
+import UniformTypeIdentifiers
 
 /// Activities are self-reports; metadata alone never establishes semantic activity.
 enum DiaryActivity: String, CaseIterable, Codable {
@@ -43,7 +44,13 @@ struct ActivityDiaryLedger {
         } else {
             intervals.append(DiaryInterval(start: start, end: end, activity: activity, source: source))
         }
-        intervals.removeAll { $0.end < end.addingTimeInterval(-7 * 86400) }
+        let cutoff = end.addingTimeInterval(-7 * 86400)
+        intervals.removeAll { $0.end <= cutoff }
+        intervals = intervals.map { interval in
+            var trimmed = interval
+            trimmed.start = max(cutoff, interval.start)
+            return trimmed
+        }
     }
 
     mutating func labelLastInterval(_ activity: DiaryActivity) {
@@ -80,6 +87,13 @@ struct ActivityDiaryLedger {
     }
 }
 
+struct DiaryExport: Codable {
+    let schema: Int
+    let exportedAt: Date
+    let intervals: [DiaryInterval]
+    let feedback: [DiaryReview]
+}
+
 struct DiaryReview: Codable, Equatable {
     let end: Date
     let prediction: String
@@ -104,6 +118,7 @@ final class ActivityDiaryStore: ObservableObject {
     @Published var recordTentativeEstimates = false
     @Published private(set) var review: DiaryReview?
     @Published private(set) var feedbackCount = 0
+    @Published private(set) var exportStatus = ""
     @Published private(set) var enabled = false
     @Published private(set) var cue = "Disabled"
     @Published private(set) var totals: [String: Double] = [:]
@@ -118,6 +133,7 @@ final class ActivityDiaryStore: ObservableObject {
     private var previous: Date?
     private var previousActivity = "unknown"
     private var previousSource = "metadata"
+    private var lastForegroundPID: pid_t?
     private var latestReviewable: DiaryReview?
     private var feedback: [DiaryReview] = []
     private static let feedbackKey = "activityDiary.feedback.v1"
@@ -131,19 +147,25 @@ final class ActivityDiaryStore: ObservableObject {
         self.defaults = defaults
         let data = defaults.data(forKey: Self.key)
         let decoded = data.flatMap { try? JSONDecoder().decode([DiaryInterval].self, from: $0) } ?? []
-        let recent = decoded.filter { $0.end >= Date().addingTimeInterval(-7 * 86400) }
+        let cutoff = Date().addingTimeInterval(-7 * 86400)
+        let recent = decoded.filter { $0.end > cutoff }.map { interval in
+            var trimmed = interval
+            trimmed.start = max(cutoff, interval.start)
+            return trimmed
+        }
         ledger = ActivityDiaryLedger(intervals: recent)
         totals = ledger.totals(on: Date())
         feedback = defaults.data(forKey: Self.feedbackKey).flatMap { try? JSONDecoder().decode([DiaryReview].self, from: $0) } ?? []
         feedback = Array(feedback.filter { $0.end >= Date().addingTimeInterval(-7 * 86400) }.suffix(1000))
         feedbackCount = feedback.count
         // Persist pruning even if no new session is started.
-        if decoded.count != recent.count { persist() }
+        persist()
     }
 
     func setEnabled(_ value: Bool) {
         enabled = value
-        task?.cancel(); task = nil; previous = nil
+        task?.cancel(); task = nil; previous = nil; lastForegroundPID = nil
+        latestReviewable = nil; review = nil
         if !value { screenProbe.invalidate(); audioProbe.invalidate(); cue = "Disabled"; persist(); return }
         guard !suspended else { return }
         cue = "Metadata only — semantic activity unknown"
@@ -162,6 +184,7 @@ final class ActivityDiaryStore: ObservableObject {
         if value {
             screenProbe.invalidate()
             audioProbe.invalidate()
+            latestReviewable = nil; review = nil; lastForegroundPID = nil
             task?.cancel(); task = nil; previous = nil; persist()
             cue = "Paused while session is inactive"
         } else if enabled { setEnabled(true) }
@@ -170,6 +193,12 @@ final class ActivityDiaryStore: ObservableObject {
     func sample(now: Date = Date()) {
         guard enabled, !suspended else { return }
         let snapshot = sensor.currentSnapshot()
+        let currentPID = NSWorkspace.shared.frontmostApplication?.processIdentifier
+        if currentPID != lastForegroundPID {
+            screenProbe.invalidate()
+            lastScreenAttempt = nil
+            lastForegroundPID = currentPID
+        }
         let own = NSWorkspace.shared.frontmostApplication?.processIdentifier == ProcessInfo.processInfo.processIdentifier
         let category = WorkApplicationCategory.category(for: snapshot.bundleIdentifier)?.rawValue ?? "unclassified app"
         let possiblyAway = snapshot.secondsSinceLastInput.map { $0.isFinite && $0 >= 120 } ?? false
@@ -213,7 +242,30 @@ final class ActivityDiaryStore: ObservableObject {
         if samplesSinceSave >= 6 { persist(); samplesSinceSave = 0 }
     }
 
-    func beginReview() { review = latestReviewable }
+    func beginReview(now: Date = Date()) {
+        guard let latestReviewable, now.timeIntervalSince(latestReviewable.end) >= 0,
+              now.timeIntervalSince(latestReviewable.end) <= 120 else { review = nil; return }
+        review = latestReviewable
+    }
+
+    func skipReview() { review = nil }
+
+    func exportData() {
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [.json]
+        panel.nameFieldStringValue = "desktop-buddy-diary.json"
+        panel.message = "Exports local intervals, tentative predictions and your answers. No screenshots, audio, titles or app identifiers. Exported copies are not removed by Clear diary."
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        do {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            let payload = DiaryExport(schema: 1, exportedAt: Date(), intervals: ledger.intervals, feedback: feedback)
+            try encoder.encode(payload).write(to: url, options: .atomic)
+            try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: url.path)
+            exportStatus = "Exported locally. Keep this file private."
+        } catch { exportStatus = "Export failed or file permissions could not be restricted. Check the selected destination." }
+    }
 
     func correct(_ activity: DiaryActivity) {
         guard var target = review, ledger.label(endingAt: target.end, activity: activity) else { return }
@@ -231,7 +283,8 @@ final class ActivityDiaryStore: ObservableObject {
         ledger = ActivityDiaryLedger(); totals = [:]; lastIntervalEnd = nil; previous = nil
         defaults.removeObject(forKey: Self.key)
         defaults.removeObject(forKey: Self.feedbackKey)
-        feedback = []; feedbackCount = 0; review = nil; latestReviewable = nil
+        feedback = []; feedbackCount = 0; review = nil; latestReviewable = nil; exportStatus = ""
+        screenProbe.invalidate(); audioProbe.invalidate()
     }
 
     func stop() { screenProbe.disable(); audioProbe.disable(); task?.cancel(); task = nil; previous = nil; persist() }
@@ -260,7 +313,7 @@ struct ActivityDiaryCard: View {
                 Toggle("Record tentative activity estimates", isOn: $diary.recordTentativeEstimates)
                 Text("Optional heuristic estimates stay separate from confirmed activity. Meeting requires fresh speech and screen cues. No-input time remains possibly away.").font(.caption)
                 Button("Review recent task interval") { diary.beginReview(); submitted = false }
-                Text("Saved feedback: \(diary.feedbackCount)").font(.caption)
+                Text("Saved feedback: \(diary.feedbackCount). Review is available after a task interval is recorded within the last 2 minutes.").font(.caption)
                 if let target = diary.review {
                     let end = target.end
                     Text("What were you doing in the recorded interval ending at \(end.formatted(date: .omitted, time: .standard))? This interval is frozen while you answer; labels at most its final 10 seconds.")
@@ -269,6 +322,7 @@ struct ActivityDiaryCard: View {
                         ForEach(DiaryActivity.allCases, id: \.self) { Text($0.title).tag($0) }
                     }
                     Button("Save answer") { diary.correct(selected); submitted = true }
+                    Button("Skip this question") { diary.skipReview() }
                     if submitted { Text("Saved as self-report.").font(.caption) }
                 }
             }
@@ -281,6 +335,8 @@ struct ActivityDiaryCard: View {
                 }.font(.caption)
             }
             Text("Unknown and possibly-away time are not verified focus or verified absence. Tentative estimates are heuristic, not verified activity or focus. Feedback does not automatically retrain a model.").font(.caption).foregroundStyle(.secondary)
+            Button("Export diary locally…") { diary.exportData() }
+            if !diary.exportStatus.isEmpty { Text(diary.exportStatus).font(.caption) }
             Button("Clear diary…", role: .destructive) { confirmingClear = true }
                 .confirmationDialog("Delete all local activity diary intervals?", isPresented: $confirmingClear) {
                     Button("Delete diary", role: .destructive) { diary.clear() }

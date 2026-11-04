@@ -58,3 +58,13 @@ python3 tools/research/profile_process.py --pid ACTUAL_PID --duration 180 --cond
 ```
 
 Repeat with `diary_off`, `metadata`, `screen`, and `audio` as appropriate. These are manually configured conditions, not switches controlled by the script. Record warm-up separately. Low Power Mode has a 180-second audio interval, so use multiple windows and verify that a burst occurred. The tool measures CPU-time delta and RSS for one process, not total system energy or physical footprint. No capture is performed by the profiler. No actual performance improvement is claimed until matched measurements exist.
+
+## Native diary export and feedback review
+
+In the native app choose **Export diary locally…**. Exported JSON contains interval times, source markers, tentative endpoint predictions, coarse audio cues and self-reports; it contains no image, OCR text, raw audio, app identifiers or window titles. The user chooses the destination. Clear diary does not delete exported copies.
+
+```sh
+python3 tools/research/analyze_diary.py research-data/desktop-buddy-diary.json --output research-data/diary-review.md
+```
+
+The English review reports category durations, a self-report confusion table, prediction coverage, accuracy including unknown, and accuracy conditional on a non-unknown prediction. Uncertain answers are excluded with counts. These are selected, potentially biased self-reports, not independent activity ground truth or a focus measurement.

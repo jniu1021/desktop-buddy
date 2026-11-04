@@ -30,7 +30,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--pid', type=int, required=True)
     parser.add_argument('--duration', type=int, default=30, choices=range(5, 301), metavar='5..300')
-    parser.add_argument('--condition', required=True, choices=['diary_off', 'metadata', 'screen', 'audio', 'combined'])
+    parser.add_argument('--condition', required=True, choices=['diary_off', 'metadata', 'screen', 'audio', 'combined', 'observed_uncontrolled'])
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     start = time.monotonic()
