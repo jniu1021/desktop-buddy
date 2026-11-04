@@ -26,6 +26,14 @@ Introduce a separate screen-capture opt-in, explicit permission explanation, tra
 
 ## Stage 3: system-audio evidence
 
+Implemented initial preview: separate per-launch playback-analysis opt-in; explicit explanation that ScreenCaptureKit may require Screen Recording access; five-second audio bursts no more frequently than every 60 seconds (180 in Low Power Mode). The diary must be active. Uses 16 kHz mono PCM and the built-in Sound Analysis classifier, with coarse speech/music/other/unknown cues. No microphone output is registered; microphone capture is explicitly disabled on macOS 15+. The current process audio is excluded. No audio files, transcript or raw model labels are persisted. A tiny, low-rate screen configuration is used for the ScreenCaptureKit source, but only audio output is registered and consumed. This is not a claim of zero screen-capture infrastructure overhead.
+
+A single burst is allowed in flight. Disable/suspend invalidates the result, cancels the task and requests stream stop during cleanup. Analyzer state is released after the burst. Missing samples mean unknown, not silence. Model scores are not activity probabilities. Audio preview does not change confirmed activity totals.
+
+Verification: build/regression and four coarse-label tests. Actual playback capture, permission denial/revocation, audio-source changes, stop behavior, sustained resource usage and classification accuracy need on-device verification. Intermittent capture misses sounds between bursts. The model may be the dominant memory cost; no low-memory guarantee is established.
+
+Further work:
+
 Capture computer playback, not microphone audio. Prefer local coarse sound classification, with bounded buffers and exclusion of the companion's own sound. No speech transcription in the first version. Speech and music are cues, not meeting/video ground truth. Quantify incremental utility and overhead before enabling ongoing sampling.
 
 ## Stage 4: feedback and evaluation

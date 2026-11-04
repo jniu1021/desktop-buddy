@@ -58,3 +58,20 @@ final class ScreenActivityRulesTests: XCTestCase {
         XCTAssertEqual(ScreenActivityRules.infer(lines: []).0, "unknown")
     }
 }
+
+final class AudioCueRulesTests: XCTestCase {
+    func testLowOrInvalidScoreRemainsUnknown() {
+        XCTAssertEqual(AudioCueRules.coarse("speech", score: 0.2), "unknown")
+        XCTAssertEqual(AudioCueRules.coarse("music", score: .nan), "unknown")
+    }
+    func testSpeechIsNotMeeting() {
+        XCTAssertEqual(AudioCueRules.coarse("speech", score: 0.9), "speech")
+        XCTAssertEqual(AudioCueRules.coarse("conversation", score: 0.8), "speech")
+    }
+    func testMusicIsNotVideo() {
+        XCTAssertEqual(AudioCueRules.coarse("background_music", score: 0.8), "music")
+    }
+    func testOtherSoundsDoNotEstablishAbsence() {
+        XCTAssertEqual(AudioCueRules.coarse("silence", score: 0.95), "other_sound")
+    }
+}

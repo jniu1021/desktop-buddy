@@ -92,6 +92,7 @@
 		DA1100000000000000000001 = {isa = PBXBuildFile; fileRef = DA1100000000000000000002; };
 		DA1100000000000000000003 = {isa = PBXBuildFile; fileRef = DA1100000000000000000004; };
 		DA2200000000000000000001 = {isa = PBXBuildFile; fileRef = DA2200000000000000000002; };
+		DA3300000000000000000001 = {isa = PBXBuildFile; fileRef = DA3300000000000000000002; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -192,6 +193,7 @@
 		DA1100000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDiaryStore.swift; sourceTree = "<group>"; };
 		DA1100000000000000000004 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDiaryTests.swift; sourceTree = "<group>"; };
 		DA2200000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenActivityProbe.swift; sourceTree = "<group>"; };
+		DA3300000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemAudioProbe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +242,7 @@
 				A90000000000000000000001 /* DesktopBuddyApp.swift */,
                 DA1100000000000000000002,
                 DA2200000000000000000002,
+                DA3300000000000000000002,
 				AA0000000000000000000001 /* AppDelegate.swift */,
 				AB0000000000000000000001 /* AppCoordinator.swift */,
 				A80000000000000000000001 /* DependencyContainer.swift */,
@@ -550,6 +553,7 @@
 			files = (
                 DA1100000000000000000001,
                 DA2200000000000000000001,
+                DA3300000000000000000001,
 				C10000000000000000000001 /* DesktopBuddyApp.swift in Sources */,
 				C10000000000000000000002 /* AppDelegate.swift in Sources */,
 				C10000000000000000000003 /* AppCoordinator.swift in Sources */,
