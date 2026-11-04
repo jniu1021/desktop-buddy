@@ -16,6 +16,12 @@ No screen or audio capture is enabled in this milestone. No raw application iden
 
 ## Stage 2: screen evidence
 
+Implemented initial preview: separate per-launch opt-in with a system permission action; macOS 14+ single-window ScreenCaptureKit snapshots; maximum dimension 1280 pixels; local fast English Vision OCR; conservative code/meeting/video text-cue rules with unknown for insufficient/conflicting cues. Normal sampling attempts every 30 seconds, 120 seconds in Low Power Mode, skipped when the companion is frontmost or input inactivity exceeds 120 seconds. One request is allowed in flight; stale results after disable, suspension, or foreground-app changes are discarded. OCR runs in a utility-priority task. Images and text are not saved or uploaded; tentative evidence is memory-only and does not populate confirmed activity totals. No YOLO or trained activity classifier is included.
+
+Limitations: selecting the largest normal visible window is not guaranteed to select the focused window; the window capture may include text outside the visible desktop region. Inactivity gating can miss passive reading/video. Fast English OCR does not establish Chinese-interface support. Simple cue rules can produce false positives. This milestone has compile/unit-test checks, but actual capture permission behavior, sustained memory/energy overhead and recognition accuracy remain unverified.
+
+Further work:
+
 Introduce a separate screen-capture opt-in, explicit permission explanation, transient low-resolution frames, and a bounded inference path. Compare lightweight classification against metadata-only behavior before choosing YOLO. Evaluate capture overhead independently of inference overhead. Suspend capture when inactive; drop stale frames rather than queueing inference. Do not save screenshots by default.
 
 ## Stage 3: system-audio evidence

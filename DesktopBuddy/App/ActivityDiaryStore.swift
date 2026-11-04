@@ -74,6 +74,8 @@ final class ActivityDiaryStore: ObservableObject {
     @Published private(set) var cue = "Disabled"
     @Published private(set) var totals: [String: Double] = [:]
     @Published private(set) var lastIntervalEnd: Date?
+    let screenProbe = ScreenActivityProbe()
+    private var lastScreenAttempt: Date?
     private let sensor: any ForegroundActivitySensing
     private let defaults: UserDefaults
     private var ledger: ActivityDiaryLedger
@@ -99,7 +101,7 @@ final class ActivityDiaryStore: ObservableObject {
     func setEnabled(_ value: Bool) {
         enabled = value
         task?.cancel(); task = nil; previous = nil
-        if !value { cue = "Disabled"; persist(); return }
+        if !value { screenProbe.invalidate(); cue = "Disabled"; persist(); return }
         guard !suspended else { return }
         cue = "Metadata only — semantic activity unknown"
         sample()
@@ -115,6 +117,7 @@ final class ActivityDiaryStore: ObservableObject {
     func setSuspended(_ value: Bool) {
         suspended = value
         if value {
+            screenProbe.invalidate()
             task?.cancel(); task = nil; previous = nil; persist()
             cue = "Paused while session is inactive"
         } else if enabled { setEnabled(true) }
@@ -126,6 +129,13 @@ final class ActivityDiaryStore: ObservableObject {
         let own = NSWorkspace.shared.frontmostApplication?.processIdentifier == ProcessInfo.processInfo.processIdentifier
         let category = WorkApplicationCategory.category(for: snapshot.bundleIdentifier)?.rawValue ?? "unclassified app"
         let possiblyAway = snapshot.secondsSinceLastInput.map { $0.isFinite && $0 >= 120 } ?? false
+        if !own, !possiblyAway {
+            let interval: TimeInterval = ProcessInfo.processInfo.isLowPowerModeEnabled ? 120 : 30
+            if lastScreenAttempt.map({ now.timeIntervalSince($0) >= interval }) ?? true {
+                lastScreenAttempt = now
+                screenProbe.sampleIfNeeded()
+            }
+        }
         let activity = own ? "feedback_ui" : (possiblyAway ? "possibly_away" : "unknown")
         cue = own ? "Desktop Buddy is in front" : "\(category) · \(possiblyAway ? "possibly away" : "activity unknown")"
         if let previous {
@@ -152,7 +162,7 @@ final class ActivityDiaryStore: ObservableObject {
         defaults.removeObject(forKey: Self.key)
     }
 
-    func stop() { task?.cancel(); task = nil; previous = nil; persist() }
+    func stop() { screenProbe.disable(); task?.cancel(); task = nil; previous = nil; persist() }
 
     private func persist() {
         if let data = try? JSONEncoder().encode(ledger.intervals) { defaults.set(data, forKey: Self.key) }
@@ -172,6 +182,7 @@ struct ActivityDiaryCard: View {
                 .font(.caption).foregroundStyle(.secondary)
             if diary.enabled {
                 Text(diary.cue).font(.caption)
+                ScreenActivityCard(probe: diary.screenProbe)
                 if let end = diary.lastIntervalEnd {
                     Text("What were you doing in the recorded interval ending at \(end.formatted(date: .omitted, time: .standard))? Your answer labels at most its final 10 seconds.")
                         .font(.caption)
@@ -190,7 +201,7 @@ struct ActivityDiaryCard: View {
                     Text("\(Int(diary.totals[key, default: 0] / 60)) min")
                 }.font(.caption)
             }
-            Text("Unknown and possibly-away time are not verified focus or verified absence. Screen and system-audio recognition are not connected yet.").font(.caption).foregroundStyle(.secondary)
+            Text("Unknown and possibly-away time are not verified focus or verified absence. Screen evidence is a separate unvalidated preview; system audio is not connected yet.").font(.caption).foregroundStyle(.secondary)
             Button("Clear diary…", role: .destructive) { confirmingClear = true }
                 .confirmationDialog("Delete all local activity diary intervals?", isPresented: $confirmingClear) {
                     Button("Delete diary", role: .destructive) { diary.clear() }

@@ -41,3 +41,20 @@ final class ActivityDiaryTests: XCTestCase {
         XCTAssertEqual(ledger.intervals.first?.seconds, 10)
     }
 }
+
+final class ScreenActivityRulesTests: XCTestCase {
+    func testSingleGenericWordIsNotCoding() {
+        XCTAssertEqual(ScreenActivityRules.infer(lines: ["import settings"]).0, "unknown")
+    }
+    func testMultipleCodeCuesAreTentativeCoding() {
+        XCTAssertEqual(ScreenActivityRules.infer(lines: ["import Foundation", "func example() {"]).0, "coding")
+    }
+    func testConflictingActivityCuesRemainUnknown() {
+        let result = ScreenActivityRules.infer(lines: ["func test()", "import Foundation", "unmute", "participants"])
+        XCTAssertEqual(result.0, "unknown")
+        XCTAssertEqual(result.1, "conflicting_screen_cues")
+    }
+    func testEmptyScreenRemainsUnknown() {
+        XCTAssertEqual(ScreenActivityRules.infer(lines: []).0, "unknown")
+    }
+}
