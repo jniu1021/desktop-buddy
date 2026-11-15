@@ -5,16 +5,25 @@ import Foundation
 @MainActor
 enum CodexExecutableLocator {
     static func locate() -> URL? {
-        var candidates: [URL] = []
-        if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.openai.codex") {
-            candidates.append(appURL.appendingPathComponent("Contents/Resources/codex"))
-        }
+        let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.openai.codex")
+        return candidateURLs(appURL: appURL)
+            .first(where: { FileManager.default.isExecutableFile(atPath: $0.path) })
+    }
+
+    static func candidateURLs(appURL: URL?) -> [URL] {
+        var candidates = appURL.map { appURL in
+            [
+                appURL.appendingPathComponent("Contents/Resources/codex-cli/bin/codex"),
+                appURL.appendingPathComponent("Contents/Resources/codex")
+            ]
+        } ?? []
         candidates.append(contentsOf: [
+            URL(fileURLWithPath: "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex"),
             URL(fileURLWithPath: "/Applications/ChatGPT.app/Contents/Resources/codex"),
             URL(fileURLWithPath: "/opt/homebrew/bin/codex"),
             URL(fileURLWithPath: "/usr/local/bin/codex")
         ])
-        return candidates.first(where: { FileManager.default.isExecutableFile(atPath: $0.path) })
+        return candidates
     }
 }
 

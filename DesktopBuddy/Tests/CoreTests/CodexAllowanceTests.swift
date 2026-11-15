@@ -19,6 +19,20 @@ final class CodexAllowanceTests: XCTestCase {
         }
     }
 
+    func testExecutableLocatorSupportsCurrentAndLegacyDesktopBundles() {
+        let appURL = URL(fileURLWithPath: "/Applications/ChatGPT.app")
+        let candidates = CodexExecutableLocator.candidateURLs(appURL: appURL)
+
+        XCTAssertEqual(
+            candidates.prefix(2).map(\.path),
+            [
+                "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex",
+                "/Applications/ChatGPT.app/Contents/Resources/codex"
+            ]
+        )
+        XCTAssertTrue(candidates.contains(URL(fileURLWithPath: "/opt/homebrew/bin/codex")))
+    }
+
     func testDecoderPrefersCodexBucketAndKeepsBothWindows() {
         let payload = """
         {
